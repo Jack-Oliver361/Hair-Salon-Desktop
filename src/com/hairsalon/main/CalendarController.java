@@ -1,4 +1,4 @@
-package HairSalon;
+package com.hairsalon.main;
 
 import com.jfoenix.controls.JFXButton;
 import java.net.URL;

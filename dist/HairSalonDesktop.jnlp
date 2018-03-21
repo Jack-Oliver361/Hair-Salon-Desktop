@@ -8,9 +8,17 @@
     <update check="always"/>
     <resources>
         <j2se version="9.0.4+" href="http://java.sun.com/products/autodl/j2se"/>
-        <jar href="HairSalonDesktop.jar" size="19324" download="eager"/>
+        <jar href="HairSalonDesktop.jar" size="24973" download="eager"/>
+        <jar href="lib\commons-logging-1.1.2.jar" size="62051" download="eager"/>
+        <jar href="lib\gson-2.8.0.jar" size="231952" download="eager"/>
+        <jar href="lib\httpclient-4.5.3.jar" size="747794" download="eager"/>
+        <jar href="lib\httpclient-cache-4.5.3.jar" size="159642" download="eager"/>
+        <jar href="lib\httpclient-win-4.5.3.jar" size="17489" download="eager"/>
+        <jar href="lib\httpcore-4.4.6.jar" size="323824" download="eager"/>
+        <jar href="lib\httpmime-4.5.3.jar" size="41029" download="eager"/>
+        <jar href="lib\javax.json-api-1.0.jar" size="19754" download="eager"/>
         <jar href="lib\jfoenix-9.0.1.jar" size="2143605" download="eager"/>
     </resources>
-    <jfx:javafx-desc width="800" height="600" main-class="HairSalon.HairSalon" name="HairSalon"/>
+    <jfx:javafx-desc width="800" height="600" main-class="com.hairsalon.main.HairSalon" name="HairSalon"/>
 </jnlp>
 

@@ -3,13 +3,17 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Jacko/Desktop/HairSalonDesktop/src/HairSalon/style.css</file>
-            <file>file:/C:/Users/Jacko/Desktop/HairSalonDesktop/src/HairSalon/CustomerController.java</file>
-            <file>file:/C:/Users/Jacko/Desktop/HairSalonDesktop/src/HairSalon/CalendarController.java</file>
-            <file>file:/C:/Users/Jacko/Desktop/HairSalonDesktop/src/HairSalon/HairSalon.java</file>
-            <file>file:/C:/Users/Jacko/Desktop/HairSalonDesktop/src/HairSalon/CalendarView.fxml</file>
-            <file>file:/C:/Users/Jacko/Desktop/HairSalonDesktop/src/HairSalon/SidePanelContent.fxml</file>
-            <file>file:/C:/Users/Jacko/Desktop/HairSalonDesktop/src/HairSalon/CustomerView.fxml</file>
+            <file>file:/C:/Users/Jacko/Desktop/HairSalonDesktop/src/com/hairsalon/dataItems/Login.java</file>
+            <file>file:/C:/Users/Jacko/Desktop/HairSalonDesktop/src/com/hairsalon/handlers/StringPropertyAdapter.java</file>
+            <file>file:/C:/Users/Jacko/Desktop/HairSalonDesktop/src/com/hairsalon/handlers/APIHandler.java</file>
+            <file>file:/C:/Users/Jacko/Desktop/HairSalonDesktop/src/com/hairsalon/dataItems/Customer.java</file>
+            <file>file:/C:/Users/Jacko/Desktop/HairSalonDesktop/src/com/hairsalon/handlers/IntegerPropertyAdapter.java</file>
+            <file>file:/C:/Users/Jacko/Desktop/HairSalonDesktop/src/com/hairsalon/main/HairSalon.java</file>
+            <file>file:/C:/Users/Jacko/Desktop/HairSalonDesktop/src/com/hairsalon/main/CalendarView.fxml</file>
+            <file>file:/C:/Users/Jacko/Desktop/HairSalonDesktop/src/com/hairsalon/main/SidePanelContent.fxml</file>
+            <file>file:/C:/Users/Jacko/Desktop/HairSalonDesktop/src/com/hairsalon/css/style.css</file>
+            <file>file:/C:/Users/Jacko/Desktop/HairSalonDesktop/src/com/hairsalon/main/CustomerController.java</file>
+            <file>file:/C:/Users/Jacko/Desktop/HairSalonDesktop/src/com/hairsalon/main/CalendarController.java</file>
         </group>
     </open-files>
 </project-private>
