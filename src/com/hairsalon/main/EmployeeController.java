@@ -5,7 +5,8 @@
  */
 package com.hairsalon.main;
 
-import com.hairsalon.dataItems.Customer;
+
+import com.hairsalon.dataItems.Employee;
 import com.hairsalon.handlers.APIHandler;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTreeTableColumn;
@@ -35,7 +36,7 @@ import javafx.stage.Stage;
  *
  * @author Jacko
  */
-public class CustomerController implements Initializable{
+public class EmployeeController implements Initializable{
     
     @FXML
     private AnchorPane AnchorPane;
@@ -56,7 +57,7 @@ public class CustomerController implements Initializable{
     private JFXButton settingsBtn;
 
     @FXML
-    private JFXTreeTableView<Customer> treeView;
+    private JFXTreeTableView<Employee> treeView;
 
     @FXML
     void loadCalendar(ActionEvent event) throws IOException {
@@ -111,33 +112,17 @@ public class CustomerController implements Initializable{
         rootP = AnchorPane;
         calendarBtn.getStyleClass().removeAll("button, focused"); 
         
-        JFXTreeTableColumn<Customer,Number> colID = new JFXTreeTableColumn<>("Customer ID");
+        JFXTreeTableColumn<Employee,Number> colID = new JFXTreeTableColumn<>("Employee ID");
         colID.setPrefWidth(100);
-        colID.setCellValueFactory((TreeTableColumn.CellDataFeatures<Customer, Number> param) -> param.getValue().getValue().customerID);
+        colID.setCellValueFactory((TreeTableColumn.CellDataFeatures<Employee, Number> param) -> param.getValue().getValue().employeeID);
         
-        JFXTreeTableColumn<Customer,String> colFirstName = new JFXTreeTableColumn<>("First Name");
+        JFXTreeTableColumn<Employee,String> colFirstName = new JFXTreeTableColumn<>("First Name");
         colFirstName.setPrefWidth(150);
-        colFirstName.setCellValueFactory((TreeTableColumn.CellDataFeatures<Customer, String> param) -> param.getValue().getValue().firstName);
+        colFirstName.setCellValueFactory((TreeTableColumn.CellDataFeatures<Employee, String> param) -> param.getValue().getValue().firstName);
         
-        JFXTreeTableColumn<Customer,String> colLastName = new JFXTreeTableColumn<>("Last Name");
+        JFXTreeTableColumn<Employee,String> colLastName = new JFXTreeTableColumn<>("Last Name");
         colLastName.setPrefWidth(150);
-        colLastName.setCellValueFactory((TreeTableColumn.CellDataFeatures<Customer, String> param) -> param.getValue().getValue().lastName);
-        
-        JFXTreeTableColumn<Customer,String> colEmail = new JFXTreeTableColumn<>("Email");
-        colEmail.setPrefWidth(250);
-        colEmail.setCellValueFactory((TreeTableColumn.CellDataFeatures<Customer, String> param) -> param.getValue().getValue().email);
-        
-        JFXTreeTableColumn<Customer,String> colPhone = new JFXTreeTableColumn<>("Phone Number");
-        colPhone.setPrefWidth(150);
-        colPhone.setCellValueFactory((TreeTableColumn.CellDataFeatures<Customer, String> param) -> param.getValue().getValue().phone);
-        
-        JFXTreeTableColumn<Customer,String> colDOB = new JFXTreeTableColumn<>("Date of birth");
-        colDOB.setPrefWidth(150);
-        colDOB.setCellValueFactory((TreeTableColumn.CellDataFeatures<Customer, String> param) -> param.getValue().getValue().dob);
-        
-        JFXTreeTableColumn<Customer,String> colGender = new JFXTreeTableColumn<>("Gender");
-        colGender.setPrefWidth(120);
-        colGender.setCellValueFactory((TreeTableColumn.CellDataFeatures<Customer, String> param) -> param.getValue().getValue().gender);
+        colLastName.setCellValueFactory((TreeTableColumn.CellDataFeatures<Employee, String> param) -> param.getValue().getValue().lastName);
         
         APIHandler api;
         api = new APIHandler("http://localhost:62975/token/login", "login");
@@ -145,22 +130,21 @@ public class CustomerController implements Initializable{
             api.loginAPI();
             
         } catch (IOException ex) {
-            Logger.getLogger(CustomerController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(EmployeeController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        api.setUrl("http://localhost:62975/api/customers");
-        api.setDataBeingPulled("customer");
+        api.setUrl("http://localhost:62975/api/employees");
+        api.setDataBeingPulled("employee");
         api.MakeAPICall();
-        ObservableList<Customer> customers = FXCollections.observableArrayList();
+        ObservableList<Employee> employees = FXCollections.observableArrayList();
          for (Object dataItem : api.getDataFromAPI()) {
-            Customer customer = (Customer) dataItem;
-
-                customers.add(new Customer(customer.getID(),customer.getFirstName(),customer.getLastName(),customer.getEmail(),customer.getPassword(),customer.getConfirmPassword(),customer.getPhone(),customer.getDOB(),customer.getGender()));
+            Employee employee = (Employee) dataItem;
+                employees.add(new Employee(employee.getID(),employee.getFirstName(),employee.getLastName()));
                 
             }   
         
           
-        final TreeItem<Customer> root = new RecursiveTreeItem<>(customers, RecursiveTreeObject::getChildren);
-        treeView.getColumns().setAll(colID, colFirstName, colLastName, colEmail, colPhone, colDOB, colGender);
+        final TreeItem<Employee> root = new RecursiveTreeItem<>(employees, RecursiveTreeObject::getChildren);
+        treeView.getColumns().setAll(colID, colFirstName, colLastName);
         treeView.setRoot(root);
         treeView.setShowRoot(false);
     }

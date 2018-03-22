@@ -25,6 +25,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.hairsalon.dataItems.Employee;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.StringProperty;
 
@@ -66,8 +67,10 @@ public class APIHandler {
 
             switch (dataBeingPulled) {
                 case "customer":
-                    System.out.print(json);
                     response = gson.fromJson(json, Customer[].class);
+                    break;
+                case "employee":
+                    response = gson.fromJson(json, Employee[].class);
                     break;
             }
 
@@ -91,7 +94,7 @@ public class APIHandler {
            com.google.gson.Gson gson = new com.google.gson.Gson();
            String json = EntityUtils.toString(response.getEntity(), "UTF-8");
            LoginData = gson.fromJson(json, Login.class);
-           System.out.print(LoginData.getAccess_token());
+
        }
     }
 }

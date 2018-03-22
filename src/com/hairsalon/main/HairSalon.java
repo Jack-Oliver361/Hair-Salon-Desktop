@@ -9,13 +9,6 @@ package com.hairsalon.main;
  *
  * @author Jacko
  */
-import com.hairsalon.handlers.APIHandler;
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.Base64;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.fxml.FXMLLoader;
@@ -29,7 +22,7 @@ public class HairSalon extends Application {
     @Override
     public void start(Stage stage) throws Exception {
 
-        Parent root = FXMLLoader.load(getClass().getResource("CustomerView.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("CalendarView.fxml"));
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();

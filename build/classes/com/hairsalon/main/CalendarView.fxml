@@ -24,7 +24,7 @@
             <Font name="Century Gothic" size="17.0" />
          </font>
       </Label>
-      <JFXButton fx:id="calendarBtn" accessibleText="Calendar" layoutX="62.0" layoutY="50.0" onMouseClicked="#loadCalendar" prefHeight="29.0" prefWidth="111.0" styleClass="style.css" stylesheets="@../css/style.css" text="Calendar">
+      <JFXButton fx:id="calendarBtn" accessibleText="Calendar" layoutX="62.0" layoutY="50.0" onAction="#loadCalendar" onMouseClicked="#loadCalendar" prefHeight="29.0" prefWidth="111.0" stylesheets="@../css/style.css" text="Calendar">
          <font>
             <Font name="Century Gothic" size="15.0" />
          </font>
@@ -34,7 +34,7 @@
             <Image url="@../images/calendar.png" />
          </image>
       </ImageView>
-      <JFXButton accessibleText="Customers" layoutX="64.0" layoutY="100.0" prefHeight="29.0" prefWidth="111.0" stylesheets="@../css/style.css" text="Customers">
+      <JFXButton accessibleText="Customers" layoutX="64.0" layoutY="100.0" onAction="#loadCustomers" prefHeight="29.0" prefWidth="111.0" stylesheets="@../css/style.css" text="Customers">
          <font>
             <Font name="Century Gothic" size="15.0" />
          </font>
@@ -44,7 +44,7 @@
             <Image url="@../images/happy.png" />
          </image>
       </ImageView>
-      <JFXButton accessibleText="Employees" layoutX="64.0" layoutY="150.0" prefHeight="29.0" prefWidth="111.0" styleClass="style.css" stylesheets="@../css/style.css" text="Employees">
+      <JFXButton accessibleText="Employees" layoutX="64.0" layoutY="150.0" onAction="#loadEmployees" prefHeight="29.0" prefWidth="111.0" stylesheets="@../css/style.css" text="Employees">
          <font>
             <Font name="Century Gothic" size="15.0" />
          </font>
@@ -54,7 +54,7 @@
             <Image url="@../images/employees.png" />
          </image>
       </ImageView>
-      <JFXButton accessibleText="Messages" layoutX="64.0" layoutY="201.0" prefHeight="29.0" prefWidth="111.0" styleClass="style.css" stylesheets="@../css/style.css" text="Messages">
+      <JFXButton accessibleText="Messages" layoutX="64.0" layoutY="201.0" onAction="#loadMessages" prefHeight="29.0" prefWidth="111.0" stylesheets="@../css/style.css" text="Messages">
          <font>
             <Font name="Century Gothic" size="15.0" />
          </font>
@@ -64,7 +64,7 @@
             <Image url="@../images/message.png" />
          </image>
       </ImageView>
-      <JFXButton accessibleText="Settings" layoutX="64.0" layoutY="646.0" prefHeight="29.0" prefWidth="111.0" stylesheets="@../css/style.css" text="Settings">
+      <JFXButton accessibleText="Settings" layoutX="64.0" layoutY="646.0" onAction="#loadSettings" prefHeight="29.0" prefWidth="111.0" stylesheets="@../css/style.css" text="Settings">
          <font>
             <Font name="Century Gothic" size="15.0" />
          </font>
