@@ -51,6 +51,9 @@ public class APIHandler {
    public ArrayList<Object> getDataFromAPI() {
         return dataFromAPI;
     }
+   public Login getLoginData() {
+        return LoginData;
+    }
    
    public void MakeAPICall() {
         try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {

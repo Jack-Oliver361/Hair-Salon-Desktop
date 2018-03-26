@@ -74,10 +74,5 @@
             <Image url="@../images/settings.png" />
          </image>
       </ImageView>
-      <Label layoutX="383.0" layoutY="233.0" text="HI">
-         <font>
-            <Font size="87.0" />
-         </font>
-      </Label>
    </children>
 </AnchorPane>

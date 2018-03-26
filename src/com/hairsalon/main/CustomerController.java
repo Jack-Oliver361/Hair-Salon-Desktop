@@ -20,14 +20,17 @@ import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
@@ -102,6 +105,8 @@ public class CustomerController implements Initializable{
         app_stage.setScene(page_scene);
         app_stage.show();
     }
+    
+     
 
     public static AnchorPane rootP;
     
@@ -163,6 +168,25 @@ public class CustomerController implements Initializable{
         treeView.getColumns().setAll(colID, colFirstName, colLastName, colEmail, colPhone, colDOB, colGender);
         treeView.setRoot(root);
         treeView.setShowRoot(false);
+        
+        treeView.setOnMouseClicked((MouseEvent mouseEvent) -> {
+            if(mouseEvent.getClickCount() == 2)
+            {
+                try {
+                   Stage st = new Stage();
+                   TreeItem<Customer> item = treeView.getSelectionModel().getSelectedItem();
+                   FXMLLoader loader = new FXMLLoader(getClass().getResource("EditCustomerView.fxml"));
+                   Parent sceneMain = loader.load();
+                   EditCustomerController controller = loader.<EditCustomerController>getController();
+                   controller.setUserData(item);
+                   Scene scene = new Scene(sceneMain);
+                   st.setScene(scene);
+                   st.show();
+                } catch (IOException ex) {
+                    Logger.getLogger(CustomerController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
     }
 }
 

@@ -5,9 +5,9 @@
  */
 package com.hairsalon.dataItems;
 
+import com.google.gson.annotations.Expose;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.Property;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -17,15 +17,23 @@ import javafx.beans.property.StringProperty;
  * @author Jacko
  */
 public class Customer extends RecursiveTreeObject<Customer> {
-    
+    @Expose
     public final  IntegerProperty customerID;
+    @Expose
     public final  StringProperty firstName;
+    @Expose
     public final  StringProperty lastName;
+    @Expose
     public final  StringProperty email;
+    @Expose
     private final StringProperty password;
+    @Expose
     private final StringProperty confirmPassword;
+    @Expose
     public final  StringProperty phone;
+    @Expose
     public final  StringProperty dob;
+    @Expose
     public final  StringProperty gender;
     
     public Customer(int customerID, String firstName, String lastName, String email, String password, String confirmPassword, String phone, String dob, String gender){
