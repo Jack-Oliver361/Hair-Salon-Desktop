@@ -5,6 +5,7 @@
  */
 package com.hairsalon.dataItems;
 
+import com.google.gson.annotations.Expose;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -17,8 +18,11 @@ import javafx.beans.property.StringProperty;
  */
 public class Employee extends RecursiveTreeObject<Employee> {
     
+    @Expose
     public final  IntegerProperty employeeID;
+    @Expose
     public final  StringProperty firstName;
+    @Expose
     public final  StringProperty lastName;
 
     

@@ -6,6 +6,7 @@
 package com.hairsalon.main;
 
 
+import com.hairsalon.dataItems.Customer;
 import com.hairsalon.dataItems.Employee;
 import com.hairsalon.handlers.APIHandler;
 import com.jfoenix.controls.JFXButton;
@@ -15,9 +16,13 @@ import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Comparator;
 import java.util.ResourceBundle;
+import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -29,6 +34,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
@@ -103,8 +109,67 @@ public class EmployeeController implements Initializable{
         app_stage.setScene(page_scene);
         app_stage.show();
     }
+    
+    @FXML
+    private JFXButton newEmployeeBtn;
+
+    @FXML
+    void addEmployee(ActionEvent event) throws IOException {
+        Stage st = new Stage();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("NewEmployeeView.fxml"));
+        Parent sceneMain = loader.load();
+        Scene scene = new Scene(sceneMain);
+        st.setScene(scene);
+        st.showAndWait();
+    }
+
 
     public static AnchorPane rootP;
+    public static int selectedIndex;
+    public TreeItem<Employee> employeeTree;
+    public static ObservableList<Employee> employees;
+    
+    void updateTable(Employee e){
+        JFXTreeTableColumn<Employee,Number> colID = new JFXTreeTableColumn<>("Employee ID");
+        colID.setPrefWidth(100);
+        colID.setCellValueFactory((TreeTableColumn.CellDataFeatures<Employee, Number> param) -> param.getValue().getValue().employeeID);
+        
+        JFXTreeTableColumn<Employee,String> colFirstName = new JFXTreeTableColumn<>("First Name");
+        colFirstName.setPrefWidth(150);
+        colFirstName.setCellValueFactory((TreeTableColumn.CellDataFeatures<Employee, String> param) -> param.getValue().getValue().firstName);
+        
+        JFXTreeTableColumn<Employee,String> colLastName = new JFXTreeTableColumn<>("Last Name");
+        colLastName.setPrefWidth(150);
+        colLastName.setCellValueFactory((TreeTableColumn.CellDataFeatures<Employee, String> param) -> param.getValue().getValue().lastName);
+        
+        APIHandler api;
+        api = new APIHandler("http://localhost:62975/token/login", "login");
+        try {
+            api.loginAPI();
+            
+        } catch (IOException ex) {
+            Logger.getLogger(EmployeeController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        api.setUrl("http://localhost:62975/api/employees");
+        api.setDataBeingPulled("employee");
+        api.MakeAPICall();
+        employees = FXCollections.observableArrayList();
+         for (Object dataItem : api.getDataFromAPI()) {
+            Employee employee = (Employee) dataItem;
+                employees.add(new Employee(employee.getID(),employee.getFirstName(),employee.getLastName()));
+                
+            }   
+        
+         
+        employeeTree = new RecursiveTreeItem<>(employees, RecursiveTreeObject::getChildren); 
+        treeView.getColumns().setAll(colID, colFirstName, colLastName);
+        treeView.setRoot(employeeTree);
+        treeView.setShowRoot(false);
+        
+     
+
+        
+    }
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -135,18 +200,52 @@ public class EmployeeController implements Initializable{
         api.setUrl("http://localhost:62975/api/employees");
         api.setDataBeingPulled("employee");
         api.MakeAPICall();
-        ObservableList<Employee> employees = FXCollections.observableArrayList();
+        employees = FXCollections.observableArrayList();
          for (Object dataItem : api.getDataFromAPI()) {
             Employee employee = (Employee) dataItem;
                 employees.add(new Employee(employee.getID(),employee.getFirstName(),employee.getLastName()));
                 
             }   
         
-          
-        final TreeItem<Employee> root = new RecursiveTreeItem<>(employees, RecursiveTreeObject::getChildren);
+         
+        employeeTree = new RecursiveTreeItem<>(employees, RecursiveTreeObject::getChildren); 
         treeView.getColumns().setAll(colID, colFirstName, colLastName);
-        treeView.setRoot(root);
+        treeView.setRoot(employeeTree);
         treeView.setShowRoot(false);
+        
+        treeView.setOnMouseClicked((MouseEvent mouseEvent) -> {
+            if(mouseEvent.getClickCount() == 2)
+            {
+                try {
+                   Stage st = new Stage();
+                   TreeItem<Employee> item = treeView.getSelectionModel().getSelectedItem();
+                   selectedIndex = item.getParent().getChildren().indexOf(item);
+                   treeView.refresh();
+                   FXMLLoader loader = new FXMLLoader(getClass().getResource("EditEmployeeView.fxml"));
+                   Parent sceneMain = loader.load();
+                   EditEmployeeController controller = loader.<EditEmployeeController>getController();
+                   controller.setUserData(item);
+                   Scene scene = new Scene(sceneMain);
+                   st.setScene(scene);
+                   st.showAndWait();
+                   Comparator<Employee> byID = Comparator.comparing(Employee::getID);
+                   System.out.println(selectedIndex);
+                   employees.sort(byID);
+                   treeView.getSortOrder().add(colID);
+                   treeView.getSortOrder().remove(colID);
+                   for (Employee dataItem : employees) {
+                    
+                        System.out.println(dataItem.getFirstName());
+                
+                
+                    } 
+                   
+                } catch (IOException ex) {
+                    Logger.getLogger(CustomerController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        
     }
 }
 

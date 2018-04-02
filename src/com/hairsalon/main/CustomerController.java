@@ -14,6 +14,7 @@ import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Comparator;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -105,10 +106,23 @@ public class CustomerController implements Initializable{
         app_stage.setScene(page_scene);
         app_stage.show();
     }
-    
+    @FXML
+    private JFXButton newCustomerBtn;
+
+    @FXML
+    void addCustomer(ActionEvent event) throws IOException {
+        Stage st = new Stage();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("NewCustomerView.fxml"));
+        Parent sceneMain = loader.load();
+        Scene scene = new Scene(sceneMain);
+        st.setScene(scene);
+        st.showAndWait();
+    }
      
 
     public static AnchorPane rootP;
+    public static int selectedIndex;
+    public static ObservableList<Customer> customers;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -155,7 +169,7 @@ public class CustomerController implements Initializable{
         api.setUrl("http://localhost:62975/api/customers");
         api.setDataBeingPulled("customer");
         api.MakeAPICall();
-        ObservableList<Customer> customers = FXCollections.observableArrayList();
+        customers = FXCollections.observableArrayList();
          for (Object dataItem : api.getDataFromAPI()) {
             Customer customer = (Customer) dataItem;
 
@@ -175,13 +189,26 @@ public class CustomerController implements Initializable{
                 try {
                    Stage st = new Stage();
                    TreeItem<Customer> item = treeView.getSelectionModel().getSelectedItem();
+                   selectedIndex = item.getValue().getID() - 1;
+                   treeView.refresh();
                    FXMLLoader loader = new FXMLLoader(getClass().getResource("EditCustomerView.fxml"));
                    Parent sceneMain = loader.load();
                    EditCustomerController controller = loader.<EditCustomerController>getController();
                    controller.setUserData(item);
                    Scene scene = new Scene(sceneMain);
                    st.setScene(scene);
-                   st.show();
+                   st.showAndWait();
+                   Comparator<Customer> byID = Comparator.comparing(Customer::getID);
+                   customers.sort(byID);
+                   treeView.getSortOrder().add(colID);
+                   treeView.getSortOrder().remove(colID);
+                   for (Customer dataItem : customers) {
+                    
+                        System.out.println(dataItem.getFirstName());
+                
+                
+                    } 
+                   
                 } catch (IOException ex) {
                     Logger.getLogger(CustomerController.class.getName()).log(Level.SEVERE, null, ex);
                 }
