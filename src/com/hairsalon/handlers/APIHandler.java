@@ -25,7 +25,11 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.hairsalon.dataItems.Appointment;
 import com.hairsalon.dataItems.Employee;
+import com.hairsalon.dataItems.ServiceProvided;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.StringProperty;
 
@@ -75,6 +79,8 @@ public class APIHandler {
                 case "employee":
                     response = gson.fromJson(json, Employee[].class);
                     break;
+                case "appointment":       
+                    response = gson.fromJson(json, ServiceProvided[].class);
             }
 
             dataFromAPI.addAll(Arrays.asList(response));
