@@ -31,8 +31,8 @@ import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
@@ -104,13 +104,13 @@ public class CalendarController implements Initializable{
     @FXML
     void nextDay(ActionEvent event) throws IOException {
         dayOfAppointment.setValue(dayOfAppointment.getValue().plusDays(1));
-        getAppointments();
+        
     }
 
     @FXML
     void perviousDay(ActionEvent event) throws IOException {
         dayOfAppointment.setValue(dayOfAppointment.getValue().minusDays(1));
-        getAppointments();
+        
     }
 
     
@@ -118,6 +118,7 @@ public class CalendarController implements Initializable{
     public static AnchorPane rootP;
     public static ObservableList<ServiceProvided> appointments;
     public DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+    public static int selectedIndex;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -141,13 +142,20 @@ public class CalendarController implements Initializable{
         };
         dayOfAppointment.setValue(LocalDate.now().minusDays(12));
         dayOfAppointment.setDayCellFactory(dayCellFactory);
+        dayOfAppointment.valueProperty().addListener((ov, oldValue, newValue) ->{
+            try { 
+                getAppointments();
+            } catch (IOException ex) {
+                Logger.getLogger(CalendarController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
         
         JFXTreeTableColumn<ServiceProvided,Number> colAppointmentID = new JFXTreeTableColumn<>("Appointment ID");
-        colAppointmentID.setPrefWidth(100);
+        colAppointmentID.setPrefWidth(150);
         colAppointmentID.setCellValueFactory((TreeTableColumn.CellDataFeatures<ServiceProvided, Number> param) -> param.getValue().getValue().appointmentID);
         
         JFXTreeTableColumn<ServiceProvided,String> colDate = new JFXTreeTableColumn<>("Date");
-        colDate.setPrefWidth(150);
+        colDate.setPrefWidth(123);
         colDate.setCellValueFactory((TreeTableColumn.CellDataFeatures<ServiceProvided, String> param) -> param.getValue().getValue().getAppointment().date);
         
         JFXTreeTableColumn<ServiceProvided,String> colTime = new JFXTreeTableColumn<>("Time");
@@ -162,13 +170,45 @@ public class CalendarController implements Initializable{
         colEmployeeName.setPrefWidth(150);
         colEmployeeName.setCellValueFactory((TreeTableColumn.CellDataFeatures<ServiceProvided, String> param) -> Bindings.concat(param.getValue().getValue().getEmployee().firstName, " ", param.getValue().getValue().getEmployee().lastName));
         
+        JFXTreeTableColumn<ServiceProvided,String> colService = new JFXTreeTableColumn<>("Service");
+        colService.setPrefWidth(175);
+        colService.setCellValueFactory((TreeTableColumn.CellDataFeatures<ServiceProvided, String> param) -> param.getValue().getValue().getService().name);
+        
+        JFXTreeTableColumn<ServiceProvided,String> colServiceDur = new JFXTreeTableColumn<>("Duration");
+        colServiceDur.setPrefWidth(150);
+        colServiceDur.setCellValueFactory((TreeTableColumn.CellDataFeatures<ServiceProvided, String> param) -> param.getValue().getValue().getService().duration);
         
         try {
             getAppointments();
         } catch (IOException ex) {
             Logger.getLogger(CalendarController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        treeView.getColumns().setAll(colAppointmentID, colDate, colTime, colCFullName, colEmployeeName);
+        treeView.getColumns().setAll(colAppointmentID, colDate, colTime, colCFullName, colEmployeeName, colService, colServiceDur);
+        
+        
+        treeView.setOnMouseClicked((MouseEvent mouseEvent) -> {
+            if(mouseEvent.getClickCount() == 2)
+            {
+                try {
+                   Stage st = new Stage();
+                   TreeItem<ServiceProvided> item = treeView.getSelectionModel().getSelectedItem();
+                   selectedIndex = item.getParent().getChildren().indexOf(item);
+                   treeView.refresh();
+                   FXMLLoader loader = new FXMLLoader(getClass().getResource("ViewAppointmentView.fxml"));
+                   Parent sceneMain = loader.load();
+                   ViewAppointmentController controller = loader.<ViewAppointmentController>getController();
+                   controller.setUserData(item);
+                   Scene scene = new Scene(sceneMain);
+                   st.setScene(scene);
+                   st.showAndWait();
+                   
+                } catch (IOException ex) {
+                    Logger.getLogger(CustomerController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        
+        
         
     }
     public void getAppointments() throws IOException{
@@ -181,7 +221,6 @@ public class CalendarController implements Initializable{
             Logger.getLogger(CustomerController.class.getName()).log(Level.SEVERE, null, ex);
         }
         formatter = formatter.withLocale(Locale.UK);
-        System.out.println();
         api.setUrl("http://localhost:62975/api/servicesProvided/dayAppointment/" + dayOfAppointment.getValue().format(formatter));
         api.setDataBeingPulled("appointment");
         api.MakeAPICall();

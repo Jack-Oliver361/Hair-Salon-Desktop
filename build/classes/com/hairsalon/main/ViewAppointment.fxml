@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="AnchorPane" maxHeight="-1.0" maxWidth="-1.0" prefHeight="488.0" prefWidth="1108.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.hairsalon.main.EditCustomerController">
+   <children>
+      <Separator layoutY="66.0" prefHeight="25.0" prefWidth="1108.0" />
+      <Label alignment="CENTER" layoutY="14.0" prefHeight="59.0" prefWidth="343.0" style="-fx-background-color: #ffffff;" text="View Appointment" textFill="#201713">
+         <font>
+            <Font name="Berlin Sans FB" size="33.0" />
+         </font>
+      </Label>
+      <JFXTextField fx:id="customerIDtxt" layoutX="469.0" layoutY="155.0" prefHeight="26.0" prefWidth="184.0" />
+      <JFXTextField fx:id="firstNametxt" layoutX="469.0" layoutY="192.0" prefHeight="25.0" prefWidth="184.0" />
+      <JFXTextField fx:id="lastNametxt" layoutX="469.0" layoutY="232.0" prefHeight="25.0" prefWidth="184.0" />
+      <JFXTextField fx:id="phonetxt" layoutX="469.0" layoutY="271.0" prefHeight="25.0" prefWidth="184.0" />
+      <Label layoutX="350.0" layoutY="166.0" text="Customer ID:" />
+      <Label layoutX="348.0" layoutY="200.0" text="First Name:" />
+      <Label layoutX="348.0" layoutY="236.0" text="Last Name:" />
+      <Label layoutX="348.0" layoutY="276.0" text="Phone:" />
+      <JFXButton layoutX="923.0" layoutY="440.0" onAction="#CloseView" prefHeight="35.0" prefWidth="158.0" stylesheets="@../css/style.css" text="Close" />
+      <JFXTextField fx:id="appointmentIDtxt" layoutX="145.0" layoutY="149.0" />
+      <JFXTextField fx:id="datetxt" layoutX="145.0" layoutY="183.0" prefHeight="26.0" prefWidth="135.0" />
+      <JFXTextField fx:id="timetxt" layoutX="145.0" layoutY="218.0" prefHeight="26.0" prefWidth="135.0" />
+      <Label layoutX="35.0" layoutY="160.0" text="Appointment ID:" />
+      <Label layoutX="35.0" layoutY="200.0" text="Date:" />
+      <Label layoutX="35.0" layoutY="235.0" text="Time:" />
+      <JFXTextField fx:id="serviceIDtxt" layoutX="858.0" layoutY="155.0" prefHeight="26.0" prefWidth="184.0" />
+      <JFXTextField fx:id="serviceNametxt" layoutX="858.0" layoutY="192.0" prefHeight="25.0" prefWidth="184.0" />
+      <JFXTextField fx:id="serviceDurtxt" layoutX="858.0" layoutY="232.0" prefHeight="25.0" prefWidth="184.0" />
+      <JFXTextField fx:id="servicePricetxt" layoutX="858.0" layoutY="271.0" prefHeight="25.0" prefWidth="184.0" />
+      <Label layoutX="739.0" layoutY="166.0" text="Service ID:" />
+      <Label layoutX="737.0" layoutY="200.0" text="Name:" />
+      <Label layoutX="737.0" layoutY="236.0" text="Duration:" />
+      <Label layoutX="737.0" layoutY="276.0" text="Price" />
+   </children>
+</AnchorPane>

@@ -189,7 +189,7 @@ public class CustomerController implements Initializable{
                 try {
                    Stage st = new Stage();
                    TreeItem<Customer> item = treeView.getSelectionModel().getSelectedItem();
-                   selectedIndex = item.getValue().getID() - 1;
+                   selectedIndex = item.getParent().getChildren().indexOf(item);
                    treeView.refresh();
                    FXMLLoader loader = new FXMLLoader(getClass().getResource("EditCustomerView.fxml"));
                    Parent sceneMain = loader.load();
