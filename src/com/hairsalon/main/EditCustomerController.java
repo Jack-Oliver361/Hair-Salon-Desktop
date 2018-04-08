@@ -116,7 +116,8 @@ public class EditCustomerController implements Initializable{
             Stage stage = (Stage) rootP.getScene().getWindow();
             stage.close();
 
-        }    }
+        }    
+    }
 
     
     

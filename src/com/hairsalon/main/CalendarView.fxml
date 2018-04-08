@@ -80,5 +80,11 @@
       <JFXDatePicker fx:id="dayOfAppointment" editable="false" layoutX="632.0" layoutY="113.0" prefHeight="32.0" prefWidth="215.0" />
       <JFXButton fx:id="perviousDayBtn" layoutX="573.0" layoutY="117.0" onAction="#perviousDay" stylesheets="@../css/style.css" text="&lt;&lt;" />
       <JFXButton fx:id="nextDayBtn" layoutX="865.0" layoutY="117.0" onAction="#nextDay" stylesheets="@../css/style.css" text="&gt;&gt;" />
+      <JFXButton fx:id="newAppointmentbtn" layoutX="415.0" layoutY="117.0" onAction="#createAppointment" stylesheets="@../css/style.css" text="New Appointment" />
+      <Label layoutX="214.0" layoutY="120.0" text="Create New Appointment:">
+         <font>
+            <Font name="Century Gothic" size="15.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

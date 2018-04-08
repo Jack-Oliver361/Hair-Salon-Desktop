@@ -55,6 +55,19 @@ public class CalendarController implements Initializable{
 
     @FXML
     private JFXButton nextDayBtn;
+    
+    @FXML
+    private JFXButton newAppointmentbtn;
+
+    @FXML
+    void createAppointment(ActionEvent event) throws IOException {
+        Stage st = new Stage();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("CreateAppointmentView.fxml"));
+        Parent sceneMain = loader.load();
+        Scene scene = new Scene(sceneMain);
+        st.setScene(scene);
+        st.showAndWait();
+    }
 
     @FXML
     void loadCalendar(ActionEvent event) throws IOException {

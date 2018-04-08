@@ -29,6 +29,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.hairsalon.dataItems.Appointment;
 import com.hairsalon.dataItems.Employee;
+import com.hairsalon.dataItems.Service;
 import com.hairsalon.dataItems.ServiceProvided;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.StringProperty;
@@ -61,6 +62,7 @@ public class APIHandler {
    
    public void MakeAPICall() {
         try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
+            dataFromAPI.clear();
             HttpGet apirequest = new HttpGet(url);
             apirequest.addHeader("content-type", "application/json");
             apirequest.addHeader("Authorization", LoginData.getToken_type() + " " + LoginData.getAccess_token());
@@ -81,6 +83,9 @@ public class APIHandler {
                     break;
                 case "appointment":       
                     response = gson.fromJson(json, ServiceProvided[].class);
+                    break;
+                case "service":       
+                    response = gson.fromJson(json, Service[].class);
             }
 
             dataFromAPI.addAll(Arrays.asList(response));

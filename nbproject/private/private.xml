@@ -4,6 +4,7 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/Jacko/Desktop/HairSalonDesktop/src/com/hairsalon/dataItems/ServiceProvided.java</file>
+            <file>file:/C:/Users/Jacko/Desktop/HairSalonDesktop/src/com/hairsalon/dataItems/AvailableTimes.java</file>
             <file>file:/C:/Users/Jacko/Desktop/HairSalonDesktop/src/com/hairsalon/main/CalendarView.fxml</file>
             <file>file:/C:/Users/Jacko/Desktop/HairSalonDesktop/src/com/hairsalon/main/SidePanelContent.fxml</file>
             <file>file:/C:/Users/Jacko/Desktop/HairSalonDesktop/src/com/hairsalon/css/style.css</file>
@@ -16,6 +17,7 @@
             <file>file:/C:/Users/Jacko/Desktop/HairSalonDesktop/src/com/hairsalon/dataItems/Service.java</file>
             <file>file:/C:/Users/Jacko/Desktop/HairSalonDesktop/src/com/hairsalon/main/EditEmployeeView.fxml</file>
             <file>file:/C:/Users/Jacko/Desktop/HairSalonDesktop/src/com/hairsalon/main/CustomerView.fxml</file>
+            <file>file:/C:/Users/Jacko/Desktop/HairSalonDesktop/src/com/hairsalon/main/CreateAppointmentView.fxml</file>
             <file>file:/C:/Users/Jacko/Desktop/HairSalonDesktop/src/com/hairsalon/handlers/APIHandler.java</file>
             <file>file:/C:/Users/Jacko/Desktop/HairSalonDesktop/src/com/hairsalon/handlers/IntegerPropertyAdapter.java</file>
             <file>file:/C:/Users/Jacko/Desktop/HairSalonDesktop/src/com/hairsalon/main/ViewAppointmentController.java</file>
@@ -26,6 +28,7 @@
             <file>file:/C:/Users/Jacko/Desktop/HairSalonDesktop/src/com/hairsalon/main/EditCustomerController.java</file>
             <file>file:/C:/Users/Jacko/Desktop/HairSalonDesktop/src/com/hairsalon/main/NewCustomerController.java</file>
             <file>file:/C:/Users/Jacko/Desktop/HairSalonDesktop/src/com/hairsalon/main/NewCustomerView.fxml</file>
+            <file>file:/C:/Users/Jacko/Desktop/HairSalonDesktop/src/com/hairsalon/main/CreateAppointmentController.java</file>
             <file>file:/C:/Users/Jacko/Desktop/HairSalonDesktop/src/com/hairsalon/handlers/StringPropertyAdapter.java</file>
             <file>file:/C:/Users/Jacko/Desktop/HairSalonDesktop/src/com/hairsalon/main/NewEmployeeView.fxml</file>
             <file>jar:file:/C:/Users/Jacko/Desktop/HairSalonDesktop/libs/jfxtras-all-8.0-r6.jar!/jfxtras/internal/scene/control/skin/agenda/Agenda.css</file>
