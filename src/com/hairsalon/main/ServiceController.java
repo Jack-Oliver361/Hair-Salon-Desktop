@@ -8,7 +8,9 @@ package com.hairsalon.main;
 
 import com.hairsalon.dataItems.Customer;
 import com.hairsalon.dataItems.Employee;
+import com.hairsalon.dataItems.Service;
 import com.hairsalon.handlers.APIHandler;
+import static com.hairsalon.main.EmployeeController.employees;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTreeTableColumn;
 import com.jfoenix.controls.JFXTreeTableView;
@@ -42,7 +44,7 @@ import javafx.stage.Stage;
  *
  * @author Jacko
  */
-public class EmployeeController implements Initializable{
+public class ServiceController implements Initializable{
     
     @FXML
     private AnchorPane AnchorPane;
@@ -63,7 +65,7 @@ public class EmployeeController implements Initializable{
     private JFXButton settingsBtn;
 
     @FXML
-    private JFXTreeTableView<Employee> treeView;
+    private JFXTreeTableView<Service> treeView;
 
     @FXML
     void loadCalendar(ActionEvent event) throws IOException {
@@ -91,7 +93,6 @@ public class EmployeeController implements Initializable{
         app_stage.setScene(page_scene);
         app_stage.show();
     }
-    
     @FXML
     void loadServices(ActionEvent event) throws IOException {
         
@@ -124,9 +125,9 @@ public class EmployeeController implements Initializable{
     private JFXButton newEmployeeBtn;
 
     @FXML
-    void addEmployee(ActionEvent event) throws IOException {
+    void addService(ActionEvent event) throws IOException {
         Stage st = new Stage();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("NewEmployeeView.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("NewServiceView.fxml"));
         Parent sceneMain = loader.load();
         Scene scene = new Scene(sceneMain);
         st.setScene(scene);
@@ -136,10 +137,10 @@ public class EmployeeController implements Initializable{
 
     public static AnchorPane rootP;
     public static int selectedIndex;
-    public TreeItem<Employee> employeeTree;
-    public static ObservableList<Employee> employees;
+    public TreeItem<Service> serviceTree;
+    public static ObservableList<Service> services;
     
-
+   
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -147,17 +148,21 @@ public class EmployeeController implements Initializable{
         rootP = AnchorPane;
         calendarBtn.getStyleClass().removeAll("button, focused"); 
         
-        JFXTreeTableColumn<Employee,Number> colID = new JFXTreeTableColumn<>("Employee ID");
+        JFXTreeTableColumn<Service,Number> colID = new JFXTreeTableColumn<>("Service ID");
         colID.setPrefWidth(100);
-        colID.setCellValueFactory((TreeTableColumn.CellDataFeatures<Employee, Number> param) -> param.getValue().getValue().employeeID);
+        colID.setCellValueFactory((TreeTableColumn.CellDataFeatures<Service, Number> param) -> param.getValue().getValue().serviceID);
         
-        JFXTreeTableColumn<Employee,String> colFirstName = new JFXTreeTableColumn<>("First Name");
-        colFirstName.setPrefWidth(150);
-        colFirstName.setCellValueFactory((TreeTableColumn.CellDataFeatures<Employee, String> param) -> param.getValue().getValue().firstName);
+        JFXTreeTableColumn<Service,String> colName = new JFXTreeTableColumn<>("Name");
+        colName.setPrefWidth(150);
+        colName.setCellValueFactory((TreeTableColumn.CellDataFeatures<Service, String> param) -> param.getValue().getValue().name);
         
-        JFXTreeTableColumn<Employee,String> colLastName = new JFXTreeTableColumn<>("Last Name");
-        colLastName.setPrefWidth(150);
-        colLastName.setCellValueFactory((TreeTableColumn.CellDataFeatures<Employee, String> param) -> param.getValue().getValue().lastName);
+        JFXTreeTableColumn<Service,String> colDuration = new JFXTreeTableColumn<>("Duration");
+        colDuration.setPrefWidth(150);
+        colDuration.setCellValueFactory((TreeTableColumn.CellDataFeatures<Service, String> param) -> param.getValue().getValue().duration);
+        
+        JFXTreeTableColumn<Service,String> colPrice = new JFXTreeTableColumn<>("Price");
+        colPrice.setPrefWidth(150);
+        colPrice.setCellValueFactory((TreeTableColumn.CellDataFeatures<Service, String> param) -> param.getValue().getValue().price);
         
         APIHandler api;
         api = new APIHandler("http://localhost:62975/token/login", "login");
@@ -167,20 +172,18 @@ public class EmployeeController implements Initializable{
         } catch (IOException ex) {
             Logger.getLogger(EmployeeController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        api.setUrl("http://localhost:62975/api/employees");
-        api.setDataBeingPulled("employee");
+        api.setUrl("http://localhost:62975/api/services");
+        api.setDataBeingPulled("service");
         api.MakeAPICall();
-        employees = FXCollections.observableArrayList();
-         for (Object dataItem : api.getDataFromAPI()) {
-            Employee employee = (Employee) dataItem;
-                employees.add(new Employee(employee.getID(),employee.getFirstName(),employee.getLastName()));
-                
-            }   
+        services = FXCollections.observableArrayList();
+        api.getDataFromAPI().stream().map((dataItem) -> (Service) dataItem).forEachOrdered((service) -> {
+            services.add(new Service(service.getID(), service.getName(), service.getDuration(), service.getPrice()));
+        });   
         
          
-        employeeTree = new RecursiveTreeItem<>(employees, RecursiveTreeObject::getChildren); 
-        treeView.getColumns().setAll(colID, colFirstName, colLastName);
-        treeView.setRoot(employeeTree);
+        serviceTree = new RecursiveTreeItem<>(services, RecursiveTreeObject::getChildren); 
+        treeView.getColumns().setAll(colID, colName, colDuration, colPrice);
+        treeView.setRoot(serviceTree);
         treeView.setShowRoot(false);
         
         treeView.setOnMouseClicked((MouseEvent mouseEvent) -> {
@@ -188,27 +191,22 @@ public class EmployeeController implements Initializable{
             {
                 try {
                    Stage st = new Stage();
-                   TreeItem<Employee> item = treeView.getSelectionModel().getSelectedItem();
+                   TreeItem<Service> item = treeView.getSelectionModel().getSelectedItem();
                    selectedIndex = item.getParent().getChildren().indexOf(item);
                    treeView.refresh();
-                   FXMLLoader loader = new FXMLLoader(getClass().getResource("EditEmployeeView.fxml"));
+                   FXMLLoader loader = new FXMLLoader(getClass().getResource("EditServiceView.fxml"));
                    Parent sceneMain = loader.load();
-                   EditEmployeeController controller = loader.<EditEmployeeController>getController();
+                   EditServiceController controller = loader.<EditServiceController>getController();
                    controller.setUserData(item);
                    Scene scene = new Scene(sceneMain);
                    st.setScene(scene);
                    st.showAndWait();
-                   Comparator<Employee> byID = Comparator.comparing(Employee::getID);
+                   Comparator<Service> byID = Comparator.comparing(Service::getID);
                    System.out.println(selectedIndex);
-                   employees.sort(byID);
+                   services.sort(byID);
                    treeView.getSortOrder().add(colID);
                    treeView.getSortOrder().remove(colID);
-                   for (Employee dataItem : employees) {
-                    
-                        System.out.println(dataItem.getFirstName());
-                
-                
-                    } 
+                   
                    
                 } catch (IOException ex) {
                     Logger.getLogger(CustomerController.class.getName()).log(Level.SEVERE, null, ex);

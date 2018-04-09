@@ -1,29 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXDatePicker?>
 <?import com.jfoenix.controls.JFXTreeTableView?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="AnchorPane" maxHeight="-1.0" maxWidth="-1.0" prefHeight="688.0" prefWidth="1447.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.hairsalon.main.CreateAppointmentController">
+<StackPane fx:id="stackPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="737.0" prefWidth="1447.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.hairsalon.main.CreateAppointmentController">
    <children>
-      <Separator layoutY="66.0" prefHeight="25.0" prefWidth="1108.0" />
-      <Label alignment="CENTER" layoutX="14.0" layoutY="14.0" prefHeight="59.0" prefWidth="303.0" style="-fx-background-color: #ffffff;" text="Create Appointment" textFill="#201713">
-         <font>
-            <Font name="Berlin Sans FB" size="33.0" />
-         </font>
-      </Label>
-      <JFXTreeTableView fx:id="customerTreeView" layoutX="14.0" layoutY="151.0" prefHeight="525.0" prefWidth="396.0" />
-      <JFXTreeTableView fx:id="serviceTreeView" layoutX="441.0" layoutY="151.0" prefHeight="525.0" prefWidth="339.0" />
-      <JFXTreeTableView fx:id="employeeTreeView" layoutX="799.0" layoutY="91.0" prefHeight="278.0" prefWidth="629.0" />
-      <JFXDatePicker fx:id="appointmentDate" layoutX="1222.0" layoutY="378.0" />
-      <Label layoutX="799.0" layoutY="382.0" text="Selecte a date to display the available times:">
-         <font>
-            <Font name="Century Gothic" size="15.0" />
-         </font>
-      </Label>
-      <JFXTreeTableView fx:id="timesTreeView" layoutX="799.0" layoutY="424.0" prefHeight="252.0" prefWidth="629.0" />
+      <AnchorPane fx:id="AnchorPane" maxHeight="-1.0" maxWidth="-1.0" prefHeight="737.0" prefWidth="1447.0" style="-fx-background-color: #ffffff;">
+         <children>
+            <Separator layoutY="47.0" prefHeight="25.0" prefWidth="1447.0" />
+            <Label alignment="CENTER" layoutX="14.0" layoutY="1.0" prefHeight="46.0" prefWidth="303.0" style="-fx-background-color: #ffffff;" text="Create Appointment" textFill="#201713">
+               <font>
+                  <Font name="Berlin Sans FB" size="33.0" />
+               </font>
+            </Label>
+            <JFXTreeTableView fx:id="customerTreeView" layoutX="14.0" layoutY="100.0" prefHeight="574.0" prefWidth="493.0" />
+            <JFXTreeTableView fx:id="serviceTreeView" layoutX="520.0" layoutY="99.0" prefHeight="574.0" prefWidth="500.0" />
+            <JFXTreeTableView fx:id="employeeTreeView" layoutX="1033.0" layoutY="99.0" prefHeight="268.0" prefWidth="400.0" />
+            <JFXDatePicker fx:id="appointmentDate" layoutX="1264.0" layoutY="378.0" prefHeight="28.0" prefWidth="165.0" />
+            <Label layoutX="1031.0" layoutY="372.0" prefHeight="40.0" prefWidth="233.0" text="Selecte a date to display times:">
+               <font>
+                  <Font name="Century Gothic" size="15.0" />
+               </font>
+            </Label>
+            <JFXTreeTableView fx:id="timesTreeView" layoutX="1033.0" layoutY="416.0" prefHeight="252.0" prefWidth="400.0" />
+            <JFXButton fx:id="createAppointmentbtn" layoutX="1178.0" layoutY="683.0" onAction="#createAppointment" prefHeight="46.0" prefWidth="171.0" stylesheets="@../css/style.css" text="Create Appointment">
+               <font>
+                  <Font name="Century Gothic" size="14.0" />
+               </font>
+            </JFXButton>
+            <JFXButton fx:id="closebtn" layoutX="1363.0" layoutY="683.0" onAction="#closeView" prefHeight="46.0" prefWidth="61.0" stylesheets="@../css/style.css" text="Close">
+               <font>
+                  <Font name="Century Gothic" size="15.0" />
+               </font>
+            </JFXButton>
+            <Label layoutX="171.0" layoutY="68.0" text="Select Customer">
+               <font>
+                  <Font name="Berlin Sans FB" size="27.0" />
+               </font>
+            </Label>
+            <Label layoutX="695.0" layoutY="68.0" text="Select Service">
+               <font>
+                  <Font name="Berlin Sans FB" size="27.0" />
+               </font>
+            </Label>
+            <Label layoutX="1160.0" layoutY="68.0" text="Select Employee">
+               <font>
+                  <Font name="Berlin Sans FB" size="27.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
    </children>
-</AnchorPane>
+</StackPane>

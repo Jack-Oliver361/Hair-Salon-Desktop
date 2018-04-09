@@ -86,6 +86,7 @@ public class APIHandler {
                     break;
                 case "service":       
                     response = gson.fromJson(json, Service[].class);
+                    break;
             }
 
             dataFromAPI.addAll(Arrays.asList(response));

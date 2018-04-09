@@ -2,13 +2,20 @@ package com.hairsalon.main;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.hairsalon.dataItems.AvailableTimes;
 import com.hairsalon.handlers.APIHandler;
 import com.hairsalon.dataItems.Customer;
 import com.hairsalon.dataItems.Employee;
+import com.hairsalon.dataItems.Login;
 import com.hairsalon.dataItems.Service;
+import com.hairsalon.handlers.IntegerPropertyAdapter;
+import com.hairsalon.handlers.StringPropertyAdapter;
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDatePicker;
+import com.jfoenix.controls.JFXDialog;
+import com.jfoenix.controls.JFXDialogLayout;
 import com.jfoenix.controls.JFXTreeTableColumn;
 import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.RecursiveTreeItem;
@@ -18,28 +25,44 @@ import java.lang.reflect.Type;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.DateCell;
+import javafx.scene.control.Label;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 
 public class CreateAppointmentController implements Initializable{
-
+     @FXML
+    private StackPane stackPane;
+     
     @FXML
     private AnchorPane AnchorPane;
 
@@ -57,6 +80,69 @@ public class CreateAppointmentController implements Initializable{
     
     @FXML
     private JFXDatePicker appointmentDate;
+    
+    @FXML
+    private JFXButton createAppointmentbtn;
+
+    @FXML
+    private JFXButton closebtn;
+
+    @FXML
+    void closeView(ActionEvent event) {
+        loadDialog("Success", "The appointment was successfully created!");
+    }
+
+    @FXML
+    void createAppointment(ActionEvent event) throws IOException {
+        Customer customer = getSelectCustomer();
+        Service service = getSelectService();
+        Employee employee = getSelectEmployee();
+        String date = appointmentDate.getValue().format(formatter);
+        AvailableTimes time = getSelectTime();
+        
+        
+        APIHandler apiHandler = new APIHandler("http://localhost:62975/token/login", "login");
+        apiHandler.loginAPI();
+        Login login = apiHandler.getLoginData();
+        JsonObject Booking = new JsonObject();
+        Booking.addProperty("selectedService", service.getName());
+        Booking.addProperty("selectedDate", date);
+        Booking.addProperty("selectedProvider", employee.getFirstName() + " " + employee.getLastName());
+        Booking.addProperty("selectedHour", time.getAvailableTimes());
+        Booking.addProperty("Email", customer.getEmail());
+ 
+        
+        try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
+           final GsonBuilder gsonBuilder = new GsonBuilder();
+
+            gsonBuilder.registerTypeAdapter(StringProperty.class, new StringPropertyAdapter());
+            gsonBuilder.registerTypeHierarchyAdapter(IntegerProperty.class, new IntegerPropertyAdapter());
+            final Gson gson = gsonBuilder.setPrettyPrinting().disableHtmlEscaping().excludeFieldsWithoutExposeAnnotation().create();
+            String json = gson.toJson(Booking);
+            System.out.println(json);
+            StringEntity requestEntity = new StringEntity(
+                    json,
+                    ContentType.APPLICATION_JSON);
+            
+            HttpPost apipost = new HttpPost("http://localhost:62975/api/appointments/createBooking");
+            apipost.addHeader("content-type", "application/json");
+            apipost.addHeader("Authorization", login.getToken_type() + " " + login.getAccess_token());
+            apipost.setEntity(requestEntity);
+
+            HttpResponse apiresult = httpClient.execute(apipost);
+            String result = EntityUtils.toString(apiresult.getEntity(), "UTF-8");
+            System.out.println(apiresult.getStatusLine().toString());
+            if(apiresult.getStatusLine().getStatusCode() == 200){
+            loadDialog("Success", "The appointment was successfully created!");
+            }else{
+                loadDialog("Failed", "Something went wrong when sending the appointment to the datbase. Please try again");
+            }
+
+        }  
+        
+        
+    }
+
 
     public static AnchorPane rootP;
     public static Customer selectedCustomer;
@@ -70,6 +156,13 @@ public class CreateAppointmentController implements Initializable{
         createCustomerTable();
         createServiceTable();
         createEmployeeTable();
+        appointmentDate.setDayCellFactory(picker -> new DateCell() {
+            @Override
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+                setDisable(empty || date.getDayOfWeek() == DayOfWeek.SATURDAY || date.getDayOfWeek() == DayOfWeek.SUNDAY ||  date.isBefore(LocalDate.now()));
+            }
+        });
         appointmentDate.valueProperty().addListener((ov, oldValue, newValue) ->{
             
             try {
@@ -155,7 +248,7 @@ public class CreateAppointmentController implements Initializable{
         colDur.setCellValueFactory((TreeTableColumn.CellDataFeatures<Service, String> param) -> param.getValue().getValue().duration);
         
         JFXTreeTableColumn<Service,String> colPrice = new JFXTreeTableColumn<>("Price");
-        colPrice.setPrefWidth(250);
+        colPrice.setPrefWidth(100);
         colPrice.setCellValueFactory((TreeTableColumn.CellDataFeatures<Service, String> param) -> param.getValue().getValue().price);
         
         
@@ -275,6 +368,32 @@ public class CreateAppointmentController implements Initializable{
     private Employee getSelectEmployee(){
         TreeItem<Employee> selectedItem = employeeTreeView.getSelectionModel().getSelectedItem();
         return selectedItem == null ? null : selectedItem.getValue() ;
+    }
+    private AvailableTimes getSelectTime(){
+        TreeItem<AvailableTimes> selectedItem = timesTreeView.getSelectionModel().getSelectedItem();
+        return selectedItem == null ? null : selectedItem.getValue() ;
+    }
+    public LocalDate getDate(){
+        return appointmentDate.getValue();
+    }
+    
+    public void loadDialog(String header, String body){
+       
+        JFXDialogLayout content = new JFXDialogLayout();
+        content.setHeading(new Text(header));
+        content.setBody(new Text(body));
+         JFXDialog dialog = new JFXDialog(stackPane,content, JFXDialog.DialogTransition.CENTER);
+        JFXButton button = new JFXButton("Okay");
+        button.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                dialog.close();
+                Stage stage = (Stage) rootP.getScene().getWindow();
+                stage.close();
+            }
+        });
+        content.setActions(button);
+        dialog.show();
     }
     
 }

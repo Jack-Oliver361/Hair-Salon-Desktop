@@ -28,13 +28,11 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.DateCell;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 
 public class CalendarController implements Initializable{
 
@@ -58,6 +56,22 @@ public class CalendarController implements Initializable{
     
     @FXML
     private JFXButton newAppointmentbtn;
+    
+     @FXML
+    void currentDate(ActionEvent event) {
+         switch (LocalDate.now().getDayOfWeek()) {
+            case SATURDAY:
+                dayOfAppointment.setValue(LocalDate.now().plusDays(2));
+                break;
+            case SUNDAY:
+                dayOfAppointment.setValue(LocalDate.now().plusDays(1));
+                break;
+            default:
+                dayOfAppointment.setValue(LocalDate.now());
+                break;
+        }
+        
+    }
 
     @FXML
     void createAppointment(ActionEvent event) throws IOException {
@@ -95,6 +109,16 @@ public class CalendarController implements Initializable{
         app_stage.setScene(page_scene);
         app_stage.show();
     }
+    
+    @FXML
+    void loadServices(ActionEvent event) throws IOException {
+        
+        Parent page_parent = FXMLLoader.load(getClass().getResource("ServiceView.fxml"));
+        Scene page_scene = new Scene(page_parent);
+        Stage app_stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        app_stage.setScene(page_scene);
+        app_stage.show();
+    }
 
     @FXML
     void loadMessages(ActionEvent event) throws IOException {
@@ -116,13 +140,27 @@ public class CalendarController implements Initializable{
     
     @FXML
     void nextDay(ActionEvent event) throws IOException {
-        dayOfAppointment.setValue(dayOfAppointment.getValue().plusDays(1));
+        switch (dayOfAppointment.getValue().plusDays(1).getDayOfWeek()) {
+            case SATURDAY:
+                dayOfAppointment.setValue(dayOfAppointment.getValue().plusDays(3));
+                break;
+            default:
+                dayOfAppointment.setValue(dayOfAppointment.getValue().plusDays(1));
+                break;
+        }
         
     }
 
     @FXML
     void perviousDay(ActionEvent event) throws IOException {
-        dayOfAppointment.setValue(dayOfAppointment.getValue().minusDays(1));
+        switch (dayOfAppointment.getValue().minusDays(1).getDayOfWeek()) {
+            case SUNDAY:
+                dayOfAppointment.setValue(dayOfAppointment.getValue().minusDays(3));
+                break;
+            default:
+                dayOfAppointment.setValue(dayOfAppointment.getValue().minusDays(1));
+                break;
+        }
         
     }
 
@@ -136,25 +174,14 @@ public class CalendarController implements Initializable{
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
-        Callback<DatePicker, DateCell> dayCellFactory = (final DatePicker datePicker) -> new DateCell() 
-        {
+        dayOfAppointment.setDayCellFactory(picker -> new DateCell() {
             @Override
-            public void updateItem(LocalDate item, boolean empty)
-            {
-                
-                super.updateItem(item, empty);
-                
-               
-                DayOfWeek day = DayOfWeek.from(item);
-                if (day == DayOfWeek.SATURDAY || day == DayOfWeek.SUNDAY)
-                {
-                    setDisabled(true);
-                    
-                }
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+                setDisable(empty || date.getDayOfWeek() == DayOfWeek.SATURDAY || date.getDayOfWeek() == DayOfWeek.SUNDAY);
             }
-        };
-        dayOfAppointment.setValue(LocalDate.now().minusDays(12));
-        dayOfAppointment.setDayCellFactory(dayCellFactory);
+        });
+        dayOfAppointment.setValue(LocalDate.now());
         dayOfAppointment.valueProperty().addListener((ov, oldValue, newValue) ->{
             try { 
                 getAppointments();
@@ -214,7 +241,6 @@ public class CalendarController implements Initializable{
                    Scene scene = new Scene(sceneMain);
                    st.setScene(scene);
                    st.showAndWait();
-                   
                 } catch (IOException ex) {
                     Logger.getLogger(CustomerController.class.getName()).log(Level.SEVERE, null, ex);
                 }

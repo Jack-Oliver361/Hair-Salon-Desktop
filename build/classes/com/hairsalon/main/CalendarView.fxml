@@ -3,8 +3,10 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXDatePicker?>
 <?import com.jfoenix.controls.JFXTreeTableView?>
+<?import java.net.URL?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
+<?import javafx.scene.effect.ColorAdjust?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -14,26 +16,32 @@
 <AnchorPane fx:id="AnchorPane" maxHeight="-1.0" maxWidth="-1.0" prefHeight="674.0" prefWidth="1294.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.hairsalon.main.CalendarController">
    <children>
       <Pane layoutY="1.0" prefHeight="689.0" prefWidth="185.0" style="-fx-background-color: #f7f7f7;" />
-      <Separator layoutX="187.0" layoutY="66.0" prefHeight="25.0" prefWidth="1108.0" />
+      <Separator layoutX="186.0" layoutY="52.0" prefHeight="25.0" prefWidth="1108.0" />
       <Separator layoutX="181.0" orientation="VERTICAL" prefHeight="689.0" prefWidth="12.0" />
       <Label alignment="CENTER" layoutX="193.0" layoutY="4.0" prefHeight="59.0" prefWidth="177.0" style="-fx-background-color: #ffffff;" text="Hair Salon" textFill="#201713">
          <font>
             <Font name="Berlin Sans FB" size="33.0" />
          </font>
       </Label>
-      <Label layoutX="14.0" layoutY="14.0" prefHeight="18.0" prefWidth="148.0" text="Navigation">
+      <Label layoutX="-6.0" layoutY="46.0" prefHeight="35.0" prefWidth="194.0" style="-fx-background-color: #75CAC2;;" />
+      <JFXTreeTableView fx:id="treeView" layoutX="214.0" layoutY="161.0" prefHeight="506.0" prefWidth="1050.0" />
+      <JFXDatePicker fx:id="dayOfAppointment" editable="false" layoutX="632.0" layoutY="113.0" prefHeight="32.0" prefWidth="215.0" />
+      <JFXButton fx:id="perviousDayBtn" layoutX="573.0" layoutY="117.0" onAction="#perviousDay" stylesheets="@../css/style.css" text="&lt;&lt;" />
+      <JFXButton fx:id="nextDayBtn" layoutX="865.0" layoutY="117.0" onAction="#nextDay" stylesheets="@../css/style.css" text="&gt;&gt;" />
+      <JFXButton fx:id="newAppointmentbtn" layoutX="415.0" layoutY="117.0" onAction="#createAppointment" stylesheets="@../css/style.css" text="New Appointment" />
+      <Label layoutX="214.0" layoutY="120.0" text="Create New Appointment:">
          <font>
-            <Font name="Century Gothic" size="17.0" />
+            <Font name="Century Gothic" size="15.0" />
          </font>
       </Label>
-      <JFXButton fx:id="calendarBtn" accessibleText="Calendar" layoutX="62.0" layoutY="50.0" onAction="#loadCalendar" onMouseClicked="#loadCalendar" prefHeight="29.0" prefWidth="111.0" stylesheets="@../css/style.css" text="Calendar">
+      <JFXButton accessibleText="Settings" layoutX="64.0" layoutY="646.0" onAction="#loadSettings" prefHeight="29.0" prefWidth="111.0" stylesheets="@../css/style.css" text="Settings">
          <font>
             <Font name="Century Gothic" size="15.0" />
          </font>
       </JFXButton>
-      <ImageView fitHeight="27.0" fitWidth="31.0" layoutX="18.0" layoutY="51.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="54.0" fitWidth="27.0" layoutX="14.0" layoutY="646.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../images/calendar.png" />
+            <Image url="@../images/settings.png" />
          </image>
       </ImageView>
       <JFXButton accessibleText="Customers" layoutX="64.0" layoutY="100.0" onAction="#loadCustomers" prefHeight="29.0" prefWidth="111.0" stylesheets="@../css/style.css" text="Customers">
@@ -46,6 +54,19 @@
             <Image url="@../images/happy.png" />
          </image>
       </ImageView>
+      <JFXButton fx:id="calendarBtn" accessibleText="Calendar" layoutX="62.0" layoutY="50.0" onAction="#loadCalendar" onMouseClicked="#loadCalendar" prefHeight="29.0" prefWidth="111.0" style="-fx-background-color: #75CAC2;; -fx-text-fill: #ffffff;" stylesheets="@../css/style.css" text="Calendar">
+         <font>
+            <Font name="Century Gothic" size="15.0" />
+         </font>
+      </JFXButton>
+      <ImageView fitHeight="27.0" fitWidth="31.0" layoutX="18.0" layoutY="51.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/calendar.png" />
+         </image>
+         <effect>
+            <ColorAdjust brightness="1.0" />
+         </effect>
+      </ImageView>
       <JFXButton accessibleText="Employees" layoutX="64.0" layoutY="150.0" onAction="#loadEmployees" prefHeight="29.0" prefWidth="111.0" stylesheets="@../css/style.css" text="Employees">
          <font>
             <Font name="Century Gothic" size="15.0" />
@@ -56,35 +77,35 @@
             <Image url="@../images/employees.png" />
          </image>
       </ImageView>
-      <JFXButton accessibleText="Messages" layoutX="64.0" layoutY="201.0" onAction="#loadMessages" prefHeight="29.0" prefWidth="111.0" stylesheets="@../css/style.css" text="Messages">
+      <JFXButton accessibleText="Services" layoutX="60.0" layoutY="199.0" onAction="#loadServices" prefHeight="29.0" prefWidth="111.0" text="Services">
+         <font>
+            <Font name="Century Gothic" size="15.0" />
+         </font>
+         <stylesheets>
+            <URL value="@../css/style.css" />
+            <URL value="@../css/style.css" />
+         </stylesheets>
+      </JFXButton>
+      <ImageView fitHeight="35.0" fitWidth="42.0" layoutX="14.0" layoutY="196.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/grooming.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="14.0" layoutY="14.0" prefHeight="18.0" prefWidth="148.0" text="Navigation">
+         <font>
+            <Font name="Century Gothic" size="17.0" />
+         </font>
+      </Label>
+      <JFXButton accessibleText="Messages" layoutX="64.0" layoutY="248.0" onAction="#loadMessages" prefHeight="29.0" prefWidth="111.0" stylesheets="@../css/style.css" text="Messages">
          <font>
             <Font name="Century Gothic" size="15.0" />
          </font>
       </JFXButton>
-      <ImageView fitHeight="35.0" fitWidth="42.0" layoutX="16.0" layoutY="198.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="35.0" fitWidth="42.0" layoutX="16.0" layoutY="245.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/message.png" />
          </image>
       </ImageView>
-      <JFXButton accessibleText="Settings" layoutX="64.0" layoutY="646.0" onAction="#loadSettings" prefHeight="29.0" prefWidth="111.0" stylesheets="@../css/style.css" text="Settings">
-         <font>
-            <Font name="Century Gothic" size="15.0" />
-         </font>
-      </JFXButton>
-      <ImageView fitHeight="54.0" fitWidth="27.0" layoutX="14.0" layoutY="646.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../images/settings.png" />
-         </image>
-      </ImageView>
-      <JFXTreeTableView fx:id="treeView" layoutX="214.0" layoutY="161.0" prefHeight="506.0" prefWidth="1050.0" />
-      <JFXDatePicker fx:id="dayOfAppointment" editable="false" layoutX="632.0" layoutY="113.0" prefHeight="32.0" prefWidth="215.0" />
-      <JFXButton fx:id="perviousDayBtn" layoutX="573.0" layoutY="117.0" onAction="#perviousDay" stylesheets="@../css/style.css" text="&lt;&lt;" />
-      <JFXButton fx:id="nextDayBtn" layoutX="865.0" layoutY="117.0" onAction="#nextDay" stylesheets="@../css/style.css" text="&gt;&gt;" />
-      <JFXButton fx:id="newAppointmentbtn" layoutX="415.0" layoutY="117.0" onAction="#createAppointment" stylesheets="@../css/style.css" text="New Appointment" />
-      <Label layoutX="214.0" layoutY="120.0" text="Create New Appointment:">
-         <font>
-            <Font name="Century Gothic" size="15.0" />
-         </font>
-      </Label>
+      <JFXButton layoutX="668.0" layoutY="88.0" onAction="#currentDate" stylesheets="@../css/style.css" text="Go to current date" />
    </children>
 </AnchorPane>

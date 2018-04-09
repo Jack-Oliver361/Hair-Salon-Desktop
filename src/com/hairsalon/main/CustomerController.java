@@ -86,6 +86,16 @@ public class CustomerController implements Initializable{
         app_stage.setScene(page_scene);
         app_stage.show();
     }
+    
+    @FXML
+    void loadServices(ActionEvent event) throws IOException {
+        
+        Parent page_parent = FXMLLoader.load(getClass().getResource("ServiceView.fxml"));
+        Scene page_scene = new Scene(page_parent);
+        Stage app_stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        app_stage.setScene(page_scene);
+        app_stage.show();
+    }
 
     @FXML
     void loadMessages(ActionEvent event) throws IOException {
