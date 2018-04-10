@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXTreeTableView?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.effect.ColorAdjust?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="AnchorPane" maxHeight="-1.0" maxWidth="-1.0" prefHeight="674.0" prefWidth="1294.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.hairsalon.main.CustomerController">
+<AnchorPane fx:id="AnchorPane" maxHeight="-1.0" maxWidth="-1.0" prefHeight="674.0" prefWidth="1294.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.hairsalon.main.SettingController">
    <children>
       <Pane layoutY="1.0" prefHeight="689.0" prefWidth="185.0" style="-fx-background-color: #f7f7f7;" />
       <Separator layoutX="187.0" layoutY="52.0" prefHeight="25.0" prefWidth="1108.0" />
@@ -22,21 +20,13 @@
             <Font name="Berlin Sans FB" size="33.0" />
          </font>
       </Label>
-      <FlowPane layoutX="195.0" layoutY="138.0" prefHeight="491.0" prefWidth="1092.0">
-         <children>
-            <JFXTreeTableView fx:id="treeView" onMouseClicked="#loadCalendar" prefHeight="529.0" prefWidth="1089.0" stylesheets="@../css/style.css" />
-         </children>
-      </FlowPane>
-      <Label layoutX="-6.0" layoutY="97.0" prefHeight="35.0" prefWidth="194.0" style="-fx-background-color: #75CAC2;;" />
-      <JFXButton fx:id="newCustomerBtn" layoutX="370.0" layoutY="103.0" onAction="#addCustomer" stylesheets="@../css/style.css" text="Add Customer">
+      <Label layoutX="-6.0" layoutY="643.0" prefHeight="35.0" prefWidth="194.0" style="-fx-background-color: #75CAC2;;" />
+      <Label layoutX="489.0" layoutY="300.0" prefHeight="91.0" prefWidth="504.0" text="Under construction !">
          <font>
-            <Font name="Century Gothic" size="12.0" />
-         </font></JFXButton>
-      <Label layoutX="195.0" layoutY="106.0" text="Add a new customer:">
-         <font>
-            <Font name="Century Gothic" size="15.0" />
+            <Font name="Berlin Sans FB" size="60.0" />
          </font>
       </Label>
+      <JFXButton layoutX="689.0" layoutY="379.0" onAction="#backToCal" stylesheets="@../css/style.css" text="Back to calendar" />
       <JFXButton accessibleText="Messages" layoutX="60.0" layoutY="199.0" onAction="#loadServices" prefHeight="29.0" prefWidth="111.0" stylesheets="@../css/style.css" text="Services">
          <font>
             <Font name="Century Gothic" size="15.0" />
@@ -52,7 +42,7 @@
             <Font name="Century Gothic" size="17.0" />
          </font>
       </Label>
-      <JFXButton fx:id="calendarBtn" accessibleText="Calendar" layoutX="62.0" layoutY="50.0" onAction="#loadCalendar" onMouseClicked="#loadCalendar" prefHeight="29.0" prefWidth="111.0" stylesheets="@../css/style.css" text="Calendar">
+      <JFXButton accessibleText="Calendar" layoutX="62.0" layoutY="50.0" onAction="#loadCalendar" onMouseClicked="#loadCalendar" prefHeight="29.0" prefWidth="111.0" stylesheets="@../css/style.css" text="Calendar">
          <font>
             <Font name="Century Gothic" size="15.0" />
          </font>
@@ -62,7 +52,7 @@
             <Image url="@../images/calendar.png" />
          </image>
       </ImageView>
-      <JFXButton accessibleText="Customers" layoutX="64.0" layoutY="100.0" onAction="#loadCustomers" prefHeight="29.0" prefWidth="111.0" style="-fx-background-color: #75CAC2; -fx-text-fill: #ffffff;" stylesheets="@../css/style.css" text="Customers">
+      <JFXButton accessibleText="Customers" layoutX="64.0" layoutY="100.0" onAction="#loadCustomers" prefHeight="29.0" prefWidth="111.0" stylesheets="@../css/style.css" text="Customers">
          <font>
             <Font name="Century Gothic" size="15.0" />
          </font>
@@ -71,9 +61,6 @@
          <image>
             <Image url="@../images/happy.png" />
          </image>
-         <effect>
-            <ColorAdjust brightness="1.0" />
-         </effect>
       </ImageView>
       <JFXButton accessibleText="Employees" layoutX="64.0" layoutY="150.0" onAction="#loadEmployees" prefHeight="29.0" prefWidth="111.0" stylesheets="@../css/style.css" text="Employees">
          <font>
@@ -95,7 +82,7 @@
             <Image url="@../images/message.png" />
          </image>
       </ImageView>
-      <JFXButton accessibleText="Settings" layoutX="64.0" layoutY="646.0" onAction="#loadSettings" prefHeight="29.0" prefWidth="111.0" stylesheets="@../css/style.css" text="Settings">
+      <JFXButton accessibleText="Settings" layoutX="64.0" layoutY="646.0" onAction="#loadSettings" prefHeight="29.0" prefWidth="111.0" style="-fx-background-color: #75CAC2; -fx-text-fill: #ffffff;" stylesheets="@../css/style.css" text="Settings">
          <font>
             <Font name="Century Gothic" size="15.0" />
          </font>
@@ -104,18 +91,11 @@
          <image>
             <Image url="@../images/settings.png" />
          </image>
+         <effect>
+            <ColorAdjust brightness="1.0" />
+         </effect>
       </ImageView>
-      <Label layoutX="243.0" layoutY="35.0" text="Customers">
-         <font>
-            <Font name="Century Gothic" size="15.0" />
-         </font>
-      </Label>
-      <JFXButton layoutX="1180.0" layoutY="104.0" onAction="#refreshList" prefHeight="23.0" prefWidth="101.0" stylesheets="@../css/style.css" text="Refresh">
-         <font>
-            <Font name="Century Gothic" size="12.0" />
-         </font>
-      </JFXButton>
-      <Label layoutX="1005.0" layoutY="107.0" text="Refresh customer list:">
+      <Label layoutX="254.0" layoutY="35.0" text="Settings">
          <font>
             <Font name="Century Gothic" size="15.0" />
          </font>

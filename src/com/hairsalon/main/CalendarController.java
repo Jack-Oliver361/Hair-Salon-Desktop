@@ -57,6 +57,9 @@ public class CalendarController implements Initializable{
     @FXML
     private JFXButton newAppointmentbtn;
     
+    @FXML
+    private JFXButton refreshList;
+    
      @FXML
     void currentDate(ActionEvent event) {
          switch (LocalDate.now().getDayOfWeek()) {
@@ -71,6 +74,11 @@ public class CalendarController implements Initializable{
                 break;
         }
         
+    }
+    
+     @FXML
+    void refreshList(ActionEvent event) throws IOException {
+        getAppointments();
     }
 
     @FXML

@@ -2,25 +2,38 @@ package com.hairsalon.main;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.hairsalon.dataItems.Customer;
 import com.hairsalon.dataItems.Employee;
 import com.hairsalon.dataItems.Login;
 import com.hairsalon.handlers.APIHandler;
 import com.hairsalon.handlers.IntegerPropertyAdapter;
 import com.hairsalon.handlers.StringPropertyAdapter;
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDatePicker;
+import com.jfoenix.controls.JFXDialog;
+import com.jfoenix.controls.JFXDialogLayout;
 import com.jfoenix.controls.JFXTextField;
 import java.io.IOException;
 import java.net.URL;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.Set;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -34,6 +47,9 @@ public class NewCustomerController implements Initializable{
 
    @FXML
     private AnchorPane AnchorPane;
+   
+    @FXML
+    private StackPane stackPane;
 
     @FXML
     private JFXTextField firstNametxt;
@@ -72,7 +88,10 @@ public class NewCustomerController implements Initializable{
         newCustomer.addProperty("password", passwordtxt.getText());
         newCustomer.addProperty("confirmPassword", confirmPasswordtxt.getText());
         newCustomer.addProperty("phone", phonetxt.getText());
-        newCustomer.addProperty("dob", dobtxt.getValue().format(formatter));
+        if(dobtxt.getValue() != null)
+            newCustomer.addProperty("dob", dobtxt.getValue().format(formatter));
+        else
+             newCustomer.addProperty("dob", "null");
         newCustomer.addProperty("gender", gendertxt.getText());
         
         try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
@@ -94,12 +113,31 @@ public class NewCustomerController implements Initializable{
 
             HttpResponse apiresult = httpClient.execute(apipost);
             String result = EntityUtils.toString(apiresult.getEntity(), "UTF-8");
+            if(apiresult.getStatusLine().getStatusCode() == 400){
+                List<String> errors = new ArrayList<>();
+                JsonParser parser = new JsonParser();
+                JsonObject rootObj = parser.parse(result).getAsJsonObject();
+                JsonObject obj = rootObj.get("modelState").getAsJsonObject();
+                 Set <Map.Entry<String, JsonElement>> entries = obj.entrySet(); // model.Email, model.LastName, etc and their child
+                 entries.stream().map((entry) -> entry.getValue().getAsJsonArray()).forEachOrdered((errorModels) -> {
+                        int j = 0;
+                        for (JsonElement e : errorModels) {
+                            errors.add(errorModels.get(j).getAsString());
+                            j++;
+                   }  
+                 });
+                 String error = "";
+                 for(String e : errors){
+                     error = error + e + "\n";
+                 }
+                 loadDialog("Failed", error);
+            }else{
             Customer customer = gson.fromJson(result, Customer.class);
             System.out.println(customer.getFirstName());
             CustomerController.customers.add(new Customer(customer.getID(),customer.getFirstName(),customer.getLastName(),customer.getEmail(),customer.getPassword(),customer.getConfirmPassword(),customer.getPhone(),customer.getDOB(),customer.getGender()));
             Stage stage = (Stage) rootP.getScene().getWindow();
             stage.close();
-
+            }
         }    
     }
 
@@ -115,6 +153,24 @@ public class NewCustomerController implements Initializable{
 
        
         
+    }
+    
+    public void loadDialog(String header, String body){
+       
+        JFXDialogLayout content = new JFXDialogLayout();
+        content.setHeading(new Text(header));
+        content.setBody(new Text(body));
+         JFXDialog dialog = new JFXDialog(stackPane,content, JFXDialog.DialogTransition.CENTER);
+        JFXButton button = new JFXButton("Okay");
+        button.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                dialog.close();
+                
+            }
+        });
+        content.setActions(button);
+        dialog.show();
     }
 
 }

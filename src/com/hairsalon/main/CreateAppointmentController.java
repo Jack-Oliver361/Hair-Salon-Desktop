@@ -34,6 +34,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.StringProperty;
+import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -41,7 +42,6 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.DateCell;
-import javafx.scene.control.Label;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.layout.AnchorPane;
@@ -97,10 +97,10 @@ public class CreateAppointmentController implements Initializable{
         Customer customer = getSelectCustomer();
         Service service = getSelectService();
         Employee employee = getSelectEmployee();
-        String date = appointmentDate.getValue().format(formatter);
         AvailableTimes time = getSelectTime();
         
-        
+        if(customer != null && service != null && employee != null && time != null){
+        String date = appointmentDate.getValue().format(formatter);
         APIHandler apiHandler = new APIHandler("http://localhost:62975/token/login", "login");
         apiHandler.loginAPI();
         Login login = apiHandler.getLoginData();
@@ -133,12 +133,20 @@ public class CreateAppointmentController implements Initializable{
             String result = EntityUtils.toString(apiresult.getEntity(), "UTF-8");
             System.out.println(apiresult.getStatusLine().toString());
             if(apiresult.getStatusLine().getStatusCode() == 200){
-            loadDialog("Success", "The appointment was successfully created!");
+                loadDialog("Success", "The appointment was successfully created!");
+                Stage stage = (Stage) rootP.getScene().getWindow();
+                stage.close();
             }else{
                 loadDialog("Failed", "Something went wrong when sending the appointment to the datbase. Please try again");
+                Stage stage = (Stage) rootP.getScene().getWindow();
+                stage.close();
             }
 
-        }  
+        }
+      }else{
+            
+            loadDialog("Failed", "Please make sure a record is selected from each table");
+        }
         
         
     }
@@ -148,6 +156,7 @@ public class CreateAppointmentController implements Initializable{
     public static Customer selectedCustomer;
     public APIHandler api;
     public DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    public ObservableList<AvailableTimes> times;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -164,13 +173,25 @@ public class CreateAppointmentController implements Initializable{
             }
         });
         appointmentDate.valueProperty().addListener((ov, oldValue, newValue) ->{
-            
-            try {
-                createAvailableTimesTable();
-            } catch (URISyntaxException | IOException ex) {
-                Logger.getLogger(CreateAppointmentController.class.getName()).log(Level.SEVERE, null, ex);
+            if(newValue != null){
+                try {
+                    createAvailableTimesTable();
+                } catch (URISyntaxException | IOException ex) {
+                    Logger.getLogger(CreateAppointmentController.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
            
+        });
+        
+        serviceTreeView.getSelectionModel().selectedItemProperty().addListener((ov, oldValue, newValue) -> {
+            if(oldValue != null){
+                TreeItem<Service> selectedItem = (TreeItem<Service>) newValue;
+                System.out.println("Selected Text : " + selectedItem.getValue());
+                employeeTreeView.getSelectionModel().clearSelection();
+                timesTreeView.getSelectionModel().clearSelection();
+                appointmentDate.setValue(null);
+                times.clear();
+            }
         });
 
     }
@@ -306,10 +327,9 @@ public class CreateAppointmentController implements Initializable{
 
     public void createAvailableTimesTable() throws URISyntaxException, IOException {
         
-        ObservableList<AvailableTimes> times;
         List<String> availableTimes;
         JFXTreeTableColumn<AvailableTimes,String> colAvailableTimes = new JFXTreeTableColumn<>("Available Time");
-        colAvailableTimes.setPrefWidth(100);
+        colAvailableTimes.setPrefWidth(398);
         colAvailableTimes.setCellValueFactory((TreeTableColumn.CellDataFeatures<AvailableTimes, String> param) -> param.getValue().getValue().AvailableTime);
         
         Service service = getSelectService();
@@ -388,8 +408,7 @@ public class CreateAppointmentController implements Initializable{
             @Override
             public void handle(ActionEvent event) {
                 dialog.close();
-                Stage stage = (Stage) rootP.getScene().getWindow();
-                stage.close();
+                
             }
         });
         content.setActions(button);

@@ -15,21 +15,24 @@
 <AnchorPane fx:id="AnchorPane" maxHeight="-1.0" maxWidth="-1.0" prefHeight="674.0" prefWidth="1294.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.hairsalon.main.CustomerController">
    <children>
       <Pane layoutY="1.0" prefHeight="689.0" prefWidth="185.0" style="-fx-background-color: #f7f7f7;" />
-      <Separator layoutX="187.0" layoutY="66.0" prefHeight="25.0" prefWidth="1108.0" />
+      <Separator layoutX="187.0" layoutY="52.0" prefHeight="25.0" prefWidth="1108.0" />
       <Separator layoutX="181.0" orientation="VERTICAL" prefHeight="689.0" prefWidth="12.0" />
-      <Label alignment="CENTER" layoutX="193.0" layoutY="4.0" prefHeight="59.0" prefWidth="177.0" style="-fx-background-color: #ffffff;" text="Hair Salon" textFill="#201713">
+      <Label alignment="CENTER" layoutX="193.0" layoutY="-3.0" prefHeight="59.0" prefWidth="177.0" style="-fx-background-color: #ffffff;" text="Hair Salon" textFill="#201713">
          <font>
             <Font name="Berlin Sans FB" size="33.0" />
          </font>
       </Label>
       <FlowPane layoutX="195.0" layoutY="138.0" prefHeight="491.0" prefWidth="1092.0">
          <children>
-            <JFXTreeTableView fx:id="treeView" onMouseClicked="#loadCalendar" prefHeight="489.0" prefWidth="1089.0" />
+            <JFXTreeTableView fx:id="treeView" onMouseClicked="#loadCalendar" prefHeight="529.0" prefWidth="1089.0" stylesheets="@../css/style.css" />
          </children>
       </FlowPane>
       <Label layoutX="-6.0" layoutY="97.0" prefHeight="35.0" prefWidth="194.0" style="-fx-background-color: #75CAC2;;" />
-      <JFXButton fx:id="newCustomerBtn" layoutX="389.0" layoutY="103.0" onAction="#addCustomer" stylesheets="@../css/style.css" text="Add Customer" />
-      <Label layoutX="214.0" layoutY="106.0" text="Add a new customer:">
+      <JFXButton fx:id="newCustomerBtn" layoutX="370.0" layoutY="103.0" onAction="#addCustomer" stylesheets="@../css/style.css" text="Add Customer">
+         <font>
+            <Font name="Century Gothic" size="12.0" />
+         </font></JFXButton>
+      <Label layoutX="195.0" layoutY="106.0" text="Add a new customer:">
          <font>
             <Font name="Century Gothic" size="15.0" />
          </font>
@@ -102,5 +105,20 @@
             <Image url="@../images/settings.png" />
          </image>
       </ImageView>
+      <Label layoutX="243.0" layoutY="35.0" text="Customers">
+         <font>
+            <Font name="Century Gothic" size="15.0" />
+         </font>
+      </Label>
+      <JFXButton layoutX="1180.0" layoutY="104.0" onAction="#refreshList" prefHeight="23.0" prefWidth="101.0" stylesheets="@../css/style.css" text="Refresh">
+         <font>
+            <Font name="Century Gothic" size="12.0" />
+         </font>
+      </JFXButton>
+      <Label layoutX="1005.0" layoutY="107.0" text="Refresh customer list:">
+         <font>
+            <Font name="Century Gothic" size="15.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

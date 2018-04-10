@@ -8,7 +8,7 @@
     <update check="always"/>
     <resources>
         <j2se version="9.0.4+" href="http://java.sun.com/products/autodl/j2se"/>
-        <jar href="HairSalonDesktop.jar" size="91393" download="eager"/>
+        <jar href="HairSalonDesktop.jar" size="105148" download="eager"/>
         <jar href="lib\calendarfx-recurrence-8.4.0.jar" size="159319" download="eager"/>
         <jar href="lib\calendarfx-view-8.4.0.jar" size="745364" download="eager"/>
         <jar href="lib\commons-logging-1.1.2.jar" size="62051" download="eager"/>

@@ -126,19 +126,59 @@ public class CustomerController implements Initializable{
         st.setScene(scene);
         st.showAndWait();
     }
+    
+    @FXML
+    void refreshList(ActionEvent event) {
+        createCustomerList();
+    }
      
 
     public static AnchorPane rootP;
     public static int selectedIndex;
     public static ObservableList<Customer> customers;
+     public JFXTreeTableColumn<Customer,Number> colID = new JFXTreeTableColumn<>("Customer ID");
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
         rootP = AnchorPane;
         calendarBtn.getStyleClass().removeAll("button, focused"); 
+        createCustomerList();
         
-        JFXTreeTableColumn<Customer,Number> colID = new JFXTreeTableColumn<>("Customer ID");
+        
+        treeView.setOnMouseClicked((MouseEvent mouseEvent) -> {
+            if(mouseEvent.getClickCount() == 2)
+            {
+                try {
+                   Stage st = new Stage();
+                   TreeItem<Customer> item = treeView.getSelectionModel().getSelectedItem();
+                   selectedIndex = item.getParent().getChildren().indexOf(item);
+                   treeView.refresh();
+                   FXMLLoader loader = new FXMLLoader(getClass().getResource("EditCustomerView.fxml"));
+                   Parent sceneMain = loader.load();
+                   EditCustomerController controller = loader.<EditCustomerController>getController();
+                   controller.setUserData(item);
+                   Scene scene = new Scene(sceneMain);
+                   st.setScene(scene);
+                   st.showAndWait();
+                   Comparator<Customer> byID = Comparator.comparing(Customer::getID);
+                   customers.sort(byID);
+                   treeView.getSortOrder().add(colID);
+                   treeView.getSortOrder().remove(colID);
+                   for (Customer dataItem : customers) {
+                    
+                        System.out.println(dataItem.getFirstName());
+                
+                
+                    } 
+                   
+                } catch (IOException ex) {
+                    Logger.getLogger(CustomerController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+    }
+    public void createCustomerList() {
         colID.setPrefWidth(100);
         colID.setCellValueFactory((TreeTableColumn.CellDataFeatures<Customer, Number> param) -> param.getValue().getValue().customerID);
         
@@ -190,38 +230,6 @@ public class CustomerController implements Initializable{
         treeView.getColumns().setAll(colID, colFirstName, colLastName, colEmail, colPhone, colDOB, colGender);
         treeView.setRoot(root);
         treeView.setShowRoot(false);
-        
-        treeView.setOnMouseClicked((MouseEvent mouseEvent) -> {
-            if(mouseEvent.getClickCount() == 2)
-            {
-                try {
-                   Stage st = new Stage();
-                   TreeItem<Customer> item = treeView.getSelectionModel().getSelectedItem();
-                   selectedIndex = item.getParent().getChildren().indexOf(item);
-                   treeView.refresh();
-                   FXMLLoader loader = new FXMLLoader(getClass().getResource("EditCustomerView.fxml"));
-                   Parent sceneMain = loader.load();
-                   EditCustomerController controller = loader.<EditCustomerController>getController();
-                   controller.setUserData(item);
-                   Scene scene = new Scene(sceneMain);
-                   st.setScene(scene);
-                   st.showAndWait();
-                   Comparator<Customer> byID = Comparator.comparing(Customer::getID);
-                   customers.sort(byID);
-                   treeView.getSortOrder().add(colID);
-                   treeView.getSortOrder().remove(colID);
-                   for (Customer dataItem : customers) {
-                    
-                        System.out.println(dataItem.getFirstName());
-                
-                
-                    } 
-                   
-                } catch (IOException ex) {
-                    Logger.getLogger(CustomerController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
     }
 }
 

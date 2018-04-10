@@ -14,10 +14,10 @@
 <AnchorPane fx:id="AnchorPane" maxHeight="-1.0" maxWidth="-1.0" prefHeight="690.0" prefWidth="754.0" style="-fx-background-color: #ffffff;" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.hairsalon.main.ServiceController">
    <children>
       <Pane layoutY="1.0" prefHeight="689.0" prefWidth="185.0" style="-fx-background-color: #f7f7f7;" />
-      <Separator layoutX="187.0" layoutY="66.0" prefHeight="25.0" prefWidth="574.0" />
+      <Separator layoutX="187.0" layoutY="52.0" prefHeight="25.0" prefWidth="574.0" />
       <Separator layoutX="181.0" orientation="VERTICAL" prefHeight="689.0" prefWidth="12.0" />
       <Label layoutX="-6.0" layoutY="194.0" prefHeight="38.0" prefWidth="194.0" style="-fx-background-color: #75CAC2;;" />
-      <Label alignment="CENTER" layoutX="193.0" layoutY="4.0" prefHeight="59.0" prefWidth="177.0" style="-fx-background-color: #ffffff;" text="Hair Salon" textFill="#201713">
+      <Label alignment="CENTER" layoutX="193.0" layoutY="-3.0" prefHeight="59.0" prefWidth="177.0" style="-fx-background-color: #ffffff;" text="Hair Salon" textFill="#201713">
          <font>
             <Font name="Berlin Sans FB" size="33.0" />
          </font>
@@ -101,5 +101,10 @@
             <Image url="@../images/settings.png" />
          </image>
       </ImageView>
+      <Label layoutX="252.0" layoutY="35.0" text="Services">
+         <font>
+            <Font name="Century Gothic" size="15.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>
