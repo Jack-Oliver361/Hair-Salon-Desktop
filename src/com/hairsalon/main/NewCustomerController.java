@@ -33,6 +33,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.apache.http.HttpResponse;
@@ -158,16 +159,16 @@ public class NewCustomerController implements Initializable{
     public void loadDialog(String header, String body){
        
         JFXDialogLayout content = new JFXDialogLayout();
-        content.setHeading(new Text(header));
-        content.setBody(new Text(body));
-         JFXDialog dialog = new JFXDialog(stackPane,content, JFXDialog.DialogTransition.CENTER);
+        Text head = new Text(header);
+        head.setFont(Font.font("Berlin Sans FB", 20));
+        content.setHeading(head);
+        Text text = new Text(body);
+        text.setFont(Font.font("Century Gothic", 15));
+        content.setBody(text);
+        JFXDialog dialog = new JFXDialog(stackPane,content, JFXDialog.DialogTransition.CENTER);
         JFXButton button = new JFXButton("Okay");
-        button.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                dialog.close();
-                
-            }
+        button.setOnAction((ActionEvent event) -> {
+            dialog.close();
         });
         content.setActions(button);
         dialog.show();

@@ -7,6 +7,7 @@ package com.hairsalon.main;
 
 import com.hairsalon.dataItems.Employee;
 import com.hairsalon.dataItems.ServiceProvided;
+import static com.hairsalon.main.CreateAppointmentController.rootP;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -15,6 +16,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TreeItem;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
 
 /**
  *
@@ -24,6 +27,8 @@ public class ViewAppointmentController implements Initializable{
     
     @FXML
     private AnchorPane AnchorPane;
+    @FXML
+    private StackPane stackPane;
 
     @FXML
     private JFXTextField customerIDtxt;
@@ -60,7 +65,8 @@ public class ViewAppointmentController implements Initializable{
 
     @FXML
     void CloseView(ActionEvent event) {
-
+        Stage stage = (Stage) rootP.getScene().getWindow();
+        stage.close();
     }
     
     public static AnchorPane rootP;

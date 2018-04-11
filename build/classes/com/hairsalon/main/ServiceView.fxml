@@ -22,7 +22,7 @@
             <Font name="Berlin Sans FB" size="33.0" />
          </font>
       </Label>
-      <JFXTreeTableView fx:id="treeView" layoutX="196.0" layoutY="140.0" prefHeight="506.0" prefWidth="552.0" />
+      <JFXTreeTableView fx:id="treeView" layoutX="196.0" layoutY="140.0" prefHeight="506.0" prefWidth="552.0" stylesheets="@../css/style.css" />
       <JFXButton fx:id="newServiceBtn" layoutX="370.0" layoutY="100.0" onAction="#addService" text="New Service">
          <font>
             <Font name="Century Gothic" size="15.0" />
