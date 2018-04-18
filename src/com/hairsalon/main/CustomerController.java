@@ -8,6 +8,8 @@ package com.hairsalon.main;
 import com.hairsalon.dataItems.Customer;
 import com.hairsalon.handlers.APIHandler;
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXDialog;
+import com.jfoenix.controls.JFXDialogLayout;
 import com.jfoenix.controls.JFXTreeTableColumn;
 import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.RecursiveTreeItem;
@@ -31,14 +33,20 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 /**
  *
  * @author Jacko
  */
-public class CustomerController implements Initializable{
-    
+public class CustomerController implements Initializable {
+
+    @FXML
+    private StackPane stackPane;
+
     @FXML
     private AnchorPane AnchorPane;
 
@@ -86,10 +94,10 @@ public class CustomerController implements Initializable{
         app_stage.setScene(page_scene);
         app_stage.show();
     }
-    
+
     @FXML
     void loadServices(ActionEvent event) throws IOException {
-        
+
         Parent page_parent = FXMLLoader.load(getClass().getResource("ServiceView.fxml"));
         Scene page_scene = new Scene(page_parent);
         Stage app_stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -126,112 +134,114 @@ public class CustomerController implements Initializable{
         st.setScene(scene);
         st.showAndWait();
     }
-    
+
     @FXML
     void refreshList(ActionEvent event) {
         createCustomerList();
     }
-     
 
     public static AnchorPane rootP;
     public static int selectedIndex;
     public static ObservableList<Customer> customers;
-     public JFXTreeTableColumn<Customer,Number> colID = new JFXTreeTableColumn<>("Customer ID");
-    
+    public JFXTreeTableColumn<Customer, Number> colID = new JFXTreeTableColumn<>("Customer ID");
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
+
         rootP = AnchorPane;
-        calendarBtn.getStyleClass().removeAll("button, focused"); 
+        calendarBtn.getStyleClass().removeAll("button, focused");
         createCustomerList();
-        
-        
+
         treeView.setOnMouseClicked((MouseEvent mouseEvent) -> {
-            if(mouseEvent.getClickCount() == 2)
-            {
+            if (mouseEvent.getClickCount() == 2) {
                 try {
-                   Stage st = new Stage();
-                   TreeItem<Customer> item = treeView.getSelectionModel().getSelectedItem();
-                   selectedIndex = item.getParent().getChildren().indexOf(item);
-                   treeView.refresh();
-                   FXMLLoader loader = new FXMLLoader(getClass().getResource("EditCustomerView.fxml"));
-                   Parent sceneMain = loader.load();
-                   EditCustomerController controller = loader.<EditCustomerController>getController();
-                   controller.setUserData(item);
-                   Scene scene = new Scene(sceneMain);
-                   st.setScene(scene);
-                   st.showAndWait();
-                   Comparator<Customer> byID = Comparator.comparing(Customer::getID);
-                   customers.sort(byID);
-                   treeView.getSortOrder().add(colID);
-                   treeView.getSortOrder().remove(colID);
-                   for (Customer dataItem : customers) {
-                    
-                        System.out.println(dataItem.getFirstName());
-                
-                
-                    } 
-                   
+                    Stage st = new Stage();
+                    TreeItem<Customer> item = treeView.getSelectionModel().getSelectedItem();
+                    selectedIndex = item.getParent().getChildren().indexOf(item);
+                    treeView.refresh();
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("EditCustomerView.fxml"));
+                    Parent sceneMain = loader.load();
+                    EditCustomerController controller = loader.<EditCustomerController>getController();
+                    controller.setUserData(item);
+                    Scene scene = new Scene(sceneMain);
+                    st.setScene(scene);
+                    st.showAndWait();
+                    Comparator<Customer> byID = Comparator.comparing(Customer::getID);
+                    customers.sort(byID);
+                    treeView.getSortOrder().add(colID);
+                    treeView.getSortOrder().remove(colID);
+
                 } catch (IOException ex) {
-                    Logger.getLogger(CustomerController.class.getName()).log(Level.SEVERE, null, ex);
+                    loadDialog("Failed", "Error connecting to the database, Please click the refresh button or reopen the program");
                 }
             }
         });
     }
+
     public void createCustomerList() {
         colID.setPrefWidth(100);
         colID.setCellValueFactory((TreeTableColumn.CellDataFeatures<Customer, Number> param) -> param.getValue().getValue().customerID);
-        
-        JFXTreeTableColumn<Customer,String> colFirstName = new JFXTreeTableColumn<>("First Name");
+
+        JFXTreeTableColumn<Customer, String> colFirstName = new JFXTreeTableColumn<>("First Name");
         colFirstName.setPrefWidth(150);
         colFirstName.setCellValueFactory((TreeTableColumn.CellDataFeatures<Customer, String> param) -> param.getValue().getValue().firstName);
-        
-        JFXTreeTableColumn<Customer,String> colLastName = new JFXTreeTableColumn<>("Last Name");
+
+        JFXTreeTableColumn<Customer, String> colLastName = new JFXTreeTableColumn<>("Last Name");
         colLastName.setPrefWidth(150);
         colLastName.setCellValueFactory((TreeTableColumn.CellDataFeatures<Customer, String> param) -> param.getValue().getValue().lastName);
-        
-        JFXTreeTableColumn<Customer,String> colEmail = new JFXTreeTableColumn<>("Email");
+
+        JFXTreeTableColumn<Customer, String> colEmail = new JFXTreeTableColumn<>("Email");
         colEmail.setPrefWidth(250);
         colEmail.setCellValueFactory((TreeTableColumn.CellDataFeatures<Customer, String> param) -> param.getValue().getValue().email);
-        
-        JFXTreeTableColumn<Customer,String> colPhone = new JFXTreeTableColumn<>("Phone Number");
+
+        JFXTreeTableColumn<Customer, String> colPhone = new JFXTreeTableColumn<>("Phone Number");
         colPhone.setPrefWidth(150);
         colPhone.setCellValueFactory((TreeTableColumn.CellDataFeatures<Customer, String> param) -> param.getValue().getValue().phone);
-        
-        JFXTreeTableColumn<Customer,String> colDOB = new JFXTreeTableColumn<>("Date of birth");
+
+        JFXTreeTableColumn<Customer, String> colDOB = new JFXTreeTableColumn<>("Date of birth");
         colDOB.setPrefWidth(150);
         colDOB.setCellValueFactory((TreeTableColumn.CellDataFeatures<Customer, String> param) -> param.getValue().getValue().dob);
-        
-        JFXTreeTableColumn<Customer,String> colGender = new JFXTreeTableColumn<>("Gender");
+
+        JFXTreeTableColumn<Customer, String> colGender = new JFXTreeTableColumn<>("Gender");
         colGender.setPrefWidth(120);
         colGender.setCellValueFactory((TreeTableColumn.CellDataFeatures<Customer, String> param) -> param.getValue().getValue().gender);
-        
-        APIHandler api;
-        api = new APIHandler("http://localhost:62975/token/login", "login");
         try {
+            APIHandler api;
+            api = new APIHandler("http://localhost:62975/token/login", "login");
             api.loginAPI();
-            
-        } catch (IOException ex) {
-            Logger.getLogger(CustomerController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        api.setUrl("http://localhost:62975/api/customers");
-        api.setDataBeingPulled("customer");
-        api.MakeAPICall();
-        customers = FXCollections.observableArrayList();
-         for (Object dataItem : api.getDataFromAPI()) {
-            Customer customer = (Customer) dataItem;
 
-                customers.add(new Customer(customer.getID(),customer.getFirstName(),customer.getLastName(),customer.getEmail(),customer.getPassword(),customer.getConfirmPassword(),customer.getPhone(),customer.getDOB(),customer.getGender()));
-                
-            }   
-        
-          
-        final TreeItem<Customer> root = new RecursiveTreeItem<>(customers, RecursiveTreeObject::getChildren);
-        treeView.getColumns().setAll(colID, colFirstName, colLastName, colEmail, colPhone, colDOB, colGender);
-        treeView.setRoot(root);
-        treeView.setShowRoot(false);
+            api.setUrl("http://localhost:62975/api/customers/get");
+            api.setDataBeingPulled("customer");
+            api.MakeAPICall();
+            customers = FXCollections.observableArrayList();
+            api.getDataFromAPI().stream().map((dataItem) -> (Customer) dataItem).forEachOrdered((customer) -> {
+                customers.add(new Customer(customer.getID(), customer.getFirstName(), customer.getLastName(), customer.getEmail(), customer.getPassword(), customer.getConfirmPassword(), customer.getPhone(), customer.getDOB(), customer.getGender()));
+            });
+
+            final TreeItem<Customer> root = new RecursiveTreeItem<>(customers, RecursiveTreeObject::getChildren);
+            treeView.getColumns().setAll(colID, colFirstName, colLastName, colEmail, colPhone, colDOB, colGender);
+            treeView.setRoot(root);
+            treeView.setShowRoot(false);
+        } catch (IOException ex) {
+            loadDialog("Failed", "Error connecting to the database, Please click the refresh button or reopen the program");
+        }
+    }
+
+    public void loadDialog(String header, String body) {
+
+        JFXDialogLayout content = new JFXDialogLayout();
+        Text head = new Text(header);
+        head.setFont(Font.font("Berlin Sans FB", 20));
+        content.setHeading(head);
+        Text text = new Text(body);
+        text.setFont(Font.font("Century Gothic", 15));
+        content.setBody(text);
+        JFXDialog dialog = new JFXDialog(stackPane, content, JFXDialog.DialogTransition.CENTER);
+        JFXButton button = new JFXButton("Okay");
+        button.setOnAction((ActionEvent event) -> {
+            dialog.close();
+        });
+        content.setActions(button);
+        dialog.show();
     }
 }
-
-
-

@@ -7,7 +7,6 @@ package com.hairsalon.main;
 
 import com.hairsalon.dataItems.Employee;
 import com.hairsalon.dataItems.ServiceProvided;
-import static com.hairsalon.main.CreateAppointmentController.rootP;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -23,8 +22,8 @@ import javafx.stage.Stage;
  *
  * @author Jacko
  */
-public class ViewAppointmentController implements Initializable{
-    
+public class ViewAppointmentController implements Initializable {
+
     @FXML
     private AnchorPane AnchorPane;
     @FXML
@@ -68,35 +67,33 @@ public class ViewAppointmentController implements Initializable{
         Stage stage = (Stage) rootP.getScene().getWindow();
         stage.close();
     }
-    
+
     public static AnchorPane rootP;
     public static Employee edit;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
+
         rootP = AnchorPane;
 
-       
-        
     }
+
     void setUserData(TreeItem<ServiceProvided> item) {
         ServiceProvided appointmentInfo = item.getValue();
-        
+
         appointmentIDtxt.setText(appointmentInfo.getAppointmentID().toString());
         datetxt.setText(appointmentInfo.getAppointment().getDate());
         timetxt.setText(appointmentInfo.getAppointment().getTime());
-        
+
         customerIDtxt.setText(appointmentInfo.getAppointment().getCustomerID().toString());
         firstNametxt.setText(appointmentInfo.getAppointment().getCFirstName());
         lastNametxt.setText(appointmentInfo.getAppointment().getCLastName());
-        
+
         serviceIDtxt.setText(appointmentInfo.getServiceID().toString());
         serviceNametxt.setText(appointmentInfo.getService().getName());
         serviceDurtxt.setText(appointmentInfo.getService().getDuration());
         servicePricetxt.setText(appointmentInfo.getService().getPrice());
-        
-    
+
     }
-    
+
 }

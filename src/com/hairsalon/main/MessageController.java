@@ -15,7 +15,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
@@ -23,11 +22,11 @@ import javafx.stage.Stage;
  *
  * @author Jacko
  */
-public class MessageController implements Initializable{
-    
-   @FXML
-   private AnchorPane AnchorPane;
-   
+public class MessageController implements Initializable {
+
+    @FXML
+    private AnchorPane AnchorPane;
+
     @FXML
     void loadCalendar(ActionEvent event) throws IOException {
         Parent page_parent = FXMLLoader.load(getClass().getResource("CalendarView.fxml"));
@@ -54,10 +53,10 @@ public class MessageController implements Initializable{
         app_stage.setScene(page_scene);
         app_stage.show();
     }
-    
+
     @FXML
     void loadServices(ActionEvent event) throws IOException {
-        
+
         Parent page_parent = FXMLLoader.load(getClass().getResource("ServiceView.fxml"));
         Scene page_scene = new Scene(page_parent);
         Stage app_stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -82,7 +81,8 @@ public class MessageController implements Initializable{
         app_stage.setScene(page_scene);
         app_stage.show();
     }
-      @FXML
+
+    @FXML
     void backToCal(ActionEvent event) throws IOException {
         Parent page_parent = FXMLLoader.load(getClass().getResource("CalendarView.fxml"));
         Scene page_scene = new Scene(page_parent);
@@ -91,19 +91,12 @@ public class MessageController implements Initializable{
         app_stage.show();
     }
 
-    
-     
-
     public static AnchorPane rootP;
-   
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
+
         rootP = AnchorPane;
-        
+
     }
 }
-
-
-
