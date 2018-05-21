@@ -172,7 +172,6 @@ public class EmployeeController implements Initializable {
                     st.setScene(scene);
                     st.showAndWait();
                     Comparator<Employee> byID = Comparator.comparing(Employee::getID);
-                    System.out.println(selectedIndex);
                     employees.sort(byID);
                     treeView.getSortOrder().add(colID);
                     treeView.getSortOrder().remove(colID);

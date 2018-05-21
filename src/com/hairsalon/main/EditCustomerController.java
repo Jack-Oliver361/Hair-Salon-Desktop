@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.Set;
 import javafx.beans.property.IntegerProperty;
@@ -33,6 +34,9 @@ import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TreeItem;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
@@ -86,24 +90,34 @@ public class EditCustomerController implements Initializable {
 
     @FXML
     void deleteCustomer(ActionEvent event) throws IOException {
-        try {
-            APIHandler api = new APIHandler("http://localhost:62975/token/login", "login");
-            api.loginAPI();
-            Login login = api.getLoginData();
-            try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle("Delete Customer");
+        alert.setHeaderText("Delete Customer");
+        alert.setContentText("Are you sure you want to delete this customer?");
 
-                HttpDelete apiput = new HttpDelete("http://localhost:62975/api/customers/Delete?id=" + customerIDtxt.getText());
-                apiput.addHeader("content-type", "application/json");
-                apiput.addHeader("Authorization", login.getToken_type() + " " + login.getAccess_token());
-                CustomerController.customers.remove(CustomerController.selectedIndex);
-                HttpResponse apiresult = httpClient.execute(apiput);
-                System.out.println(apiresult.getStatusLine());
-                Stage stage = (Stage) rootP.getScene().getWindow();
-                stage.close();
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK) {
+            try {
+                APIHandler api = new APIHandler("http://localhost:62975/token/login", "login");
+                api.loginAPI();
+                Login login = api.getLoginData();
+                try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
 
+                    HttpDelete apiput = new HttpDelete("http://localhost:62975/api/customers/Delete?id=" + customerIDtxt.getText());
+                    apiput.addHeader("content-type", "application/json");
+                    apiput.addHeader("Authorization", login.getToken_type() + " " + login.getAccess_token());
+                    CustomerController.customers.remove(CustomerController.selectedIndex);
+                    HttpResponse apiresult = httpClient.execute(apiput);
+
+                    Stage stage = (Stage) rootP.getScene().getWindow();
+                    stage.close();
+
+                }
+            } catch (IOException ex) {
+                loadDialog("Failed", "Error connecting to the database, Please click the refresh button or reopen the program");
             }
-        } catch (IOException ex) {
-            loadDialog("Failed", "Error connecting to the database, Please click the refresh button or reopen the program");
+        } else {
+
         }
     }
     public DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -125,7 +139,6 @@ public class EditCustomerController implements Initializable {
                 gsonBuilder.registerTypeHierarchyAdapter(IntegerProperty.class, new IntegerPropertyAdapter());
                 final Gson gson = gsonBuilder.setPrettyPrinting().disableHtmlEscaping().excludeFieldsWithoutExposeAnnotation().create();
                 String json = gson.toJson(customer);
-                System.out.println(json);
                 StringEntity requestEntity = new StringEntity(
                         json,
                         ContentType.APPLICATION_JSON);

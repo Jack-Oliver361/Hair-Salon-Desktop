@@ -9,7 +9,6 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-
 <StackPane fx:id="stackPane" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.hairsalon.main.EditEmployeeController">
    <children>
       <AnchorPane fx:id="AnchorPane" maxHeight="-1.0" maxWidth="-1.0" prefHeight="305.0" prefWidth="415.0" style="-fx-background-color: #f7f7f7;">
@@ -46,7 +45,7 @@
                   <Font name="Century Gothic" size="15.0" />
                </font>
             </Label>
-            <JFXButton layoutX="243.0" layoutY="257.0" onAction="#deleteEmployee" prefHeight="35.0" prefWidth="158.0" stylesheets="@../css/style.css" text="Delete">
+            <JFXButton layoutX="243.0" layoutY="257.0" onAction="#deleteEmployee" prefHeight="35.0" prefWidth="158.0" stylesheets="@../css/cancelBtn.css" text="Delete">
                <font>
                   <Font name="Century Gothic" size="15.0" />
                </font>

@@ -1,5 +1,6 @@
 package com.hairsalon.main;
 
+import com.hairsalon.dataItems.Appointment;
 import com.hairsalon.dataItems.ServiceProvided;
 import com.hairsalon.handlers.APIHandler;
 import com.jfoenix.controls.JFXButton;
@@ -15,6 +16,7 @@ import java.net.URL;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -97,6 +99,7 @@ public class CalendarController implements Initializable {
         Scene scene = new Scene(sceneMain);
         st.setScene(scene);
         st.showAndWait();
+        getAppointments();
     }
 
     @FXML
@@ -184,6 +187,7 @@ public class CalendarController implements Initializable {
     public static ObservableList<ServiceProvided> appointments;
     public DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
     public static int selectedIndex;
+    public JFXTreeTableColumn<ServiceProvided, String> colTime;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -212,10 +216,9 @@ public class CalendarController implements Initializable {
         colDate.setPrefWidth(123);
         colDate.setCellValueFactory((TreeTableColumn.CellDataFeatures<ServiceProvided, String> param) -> param.getValue().getValue().getAppointment().date);
 
-        JFXTreeTableColumn<ServiceProvided, String> colTime = new JFXTreeTableColumn<>("Time");
+        colTime = new JFXTreeTableColumn<>("Time");
         colTime.setPrefWidth(150);
         colTime.setCellValueFactory((TreeTableColumn.CellDataFeatures<ServiceProvided, String> param) -> param.getValue().getValue().getAppointment().time);
-
         JFXTreeTableColumn<ServiceProvided, String> colCFullName = new JFXTreeTableColumn<>("Customer Full Name");
         colCFullName.setPrefWidth(150);
         colCFullName.setCellValueFactory((TreeTableColumn.CellDataFeatures<ServiceProvided, String> param) -> Bindings.concat(param.getValue().getValue().getAppointment().cFirstName, " ", param.getValue().getValue().getAppointment().cLastName));
@@ -237,8 +240,8 @@ public class CalendarController implements Initializable {
         } catch (IOException ex) {
             Logger.getLogger(CalendarController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        treeView.getColumns().setAll(colAppointmentID, colDate, colTime, colCFullName, colEmployeeName, colService, colServiceDur);
 
+        treeView.getColumns().setAll(colAppointmentID, colDate, colTime, colCFullName, colEmployeeName, colService, colServiceDur);
         treeView.setOnMouseClicked((MouseEvent mouseEvent) -> {
             if (mouseEvent.getClickCount() == 2) {
                 try {
@@ -280,6 +283,7 @@ public class CalendarController implements Initializable {
                 i++;
             }
             final TreeItem<ServiceProvided> root = new RecursiveTreeItem<>(appointments, RecursiveTreeObject::getChildren);
+
             treeView.setRoot(root);
             treeView.setShowRoot(false);
 

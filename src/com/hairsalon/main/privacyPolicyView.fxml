@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.effect.ColorAdjust?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.web.WebView?>
+
+<StackPane fx:id="stackPane" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.hairsalon.main.privacyPolicyController">
+   <children>
+      <AnchorPane fx:id="AnchorPane" maxHeight="-1.0" maxWidth="-1.0" prefHeight="674.0" prefWidth="1294.0" style="-fx-background-color: #ffffff;">
+         <children>
+            <Pane layoutX="-1.0" layoutY="-3.0" prefHeight="65.0" prefWidth="1294.0" style="-fx-background-color: #f7f7f7;" />
+            <Separator layoutX="-1.0" layoutY="51.0" prefHeight="25.0" prefWidth="1294.0" />
+            <Label alignment="CENTER" layoutX="-6.0" layoutY="-3.0" prefHeight="59.0" prefWidth="177.0" text="Hair Salon" textFill="#201713">
+               <font>
+                  <Font name="Berlin Sans FB" size="33.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="27.0" fitWidth="31.0" layoutX="18.0" layoutY="51.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/calendar.png" />
+               </image>
+               <effect>
+                  <ColorAdjust brightness="1.0" />
+               </effect>
+            </ImageView>
+            <Label layoutX="31.0" layoutY="36.0" text="Privacy Policy">
+               <font>
+                  <Font name="Century Gothic" size="15.0" />
+               </font>
+            </Label>
+            <WebView fx:id="webBrowser" layoutX="6.0" layoutY="65.0" prefHeight="609.0" prefWidth="1287.0" />
+         </children>
+      </AnchorPane>
+   </children>
+</StackPane>

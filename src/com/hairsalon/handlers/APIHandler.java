@@ -25,9 +25,6 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.hairsalon.dataItems.Appointment;
 import com.hairsalon.dataItems.Employee;
 import com.hairsalon.dataItems.Service;
 import com.hairsalon.dataItems.ServiceProvided;
@@ -36,31 +33,33 @@ import javafx.beans.property.StringProperty;
 
 public class APIHandler {
 
-   private String url;
-   private String dataBeingPulled;
-   private ArrayList<Object> dataFromAPI = new ArrayList<>();
-   private Login LoginData;
-   
-   public APIHandler(String url, String dataBeingPulled) {
+    private String url;
+    private String dataBeingPulled;
+    private ArrayList<Object> dataFromAPI = new ArrayList<>();
+    private Login LoginData;
+
+    public APIHandler(String url, String dataBeingPulled) {
         this.url = url;
         this.dataBeingPulled = dataBeingPulled;
     }
-   
-   public void setDataBeingPulled(String dataBeingPulled) {
+
+    public void setDataBeingPulled(String dataBeingPulled) {
         this.dataBeingPulled = dataBeingPulled;
     }
-   
-   public void setUrl(String url) {
+
+    public void setUrl(String url) {
         this.url = url;
     }
-   public ArrayList<Object> getDataFromAPI() {
+
+    public ArrayList<Object> getDataFromAPI() {
         return dataFromAPI;
     }
-   public Login getLoginData() {
+
+    public Login getLoginData() {
         return LoginData;
     }
-   
-   public void MakeAPICall() {
+
+    public void MakeAPICall() {
         try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
             dataFromAPI.clear();
             HttpGet apirequest = new HttpGet(url);
@@ -81,10 +80,10 @@ public class APIHandler {
                 case "employee":
                     response = gson.fromJson(json, Employee[].class);
                     break;
-                case "appointment":       
+                case "appointment":
                     response = gson.fromJson(json, ServiceProvided[].class);
                     break;
-                case "service":       
+                case "service":
                     response = gson.fromJson(json, Service[].class);
                     break;
             }
@@ -95,21 +94,22 @@ public class APIHandler {
             System.out.println(ex);
         }
     }
-   public void loginAPI() throws ClientProtocolException, IOException {
-       try (CloseableHttpClient client = HttpClients.createDefault()) {
-           HttpPost httpPost = new HttpPost(url);
-           
-           List<NameValuePair> params = new ArrayList<>();
-           params.add(new BasicNameValuePair("username", "administrator"));
-           params.add(new BasicNameValuePair("password", "administrator123"));
-           params.add(new BasicNameValuePair("grant_type", "password"));
-           httpPost.setEntity(new UrlEncodedFormEntity(params));
-           
-           CloseableHttpResponse response = client.execute(httpPost);
-           com.google.gson.Gson gson = new com.google.gson.Gson();
-           String json = EntityUtils.toString(response.getEntity(), "UTF-8");
-           LoginData = gson.fromJson(json, Login.class);
 
-       }
+    public void loginAPI() throws ClientProtocolException, IOException {
+        try (CloseableHttpClient client = HttpClients.createDefault()) {
+            HttpPost httpPost = new HttpPost(url);
+
+            List<NameValuePair> params = new ArrayList<>();
+            params.add(new BasicNameValuePair("username", "administrator"));
+            params.add(new BasicNameValuePair("password", "administrator123"));
+            params.add(new BasicNameValuePair("grant_type", "password"));
+            httpPost.setEntity(new UrlEncodedFormEntity(params));
+
+            CloseableHttpResponse response = client.execute(httpPost);
+            com.google.gson.Gson gson = new com.google.gson.Gson();
+            String json = EntityUtils.toString(response.getEntity(), "UTF-8");
+            LoginData = gson.fromJson(json, Login.class);
+
+        }
     }
 }

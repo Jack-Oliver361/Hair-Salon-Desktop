@@ -72,12 +72,11 @@ public class NewEmployeeController implements Initializable {
                 gsonBuilder.registerTypeHierarchyAdapter(IntegerProperty.class, new IntegerPropertyAdapter());
                 final Gson gson = gsonBuilder.setPrettyPrinting().disableHtmlEscaping().excludeFieldsWithoutExposeAnnotation().create();
                 String json = gson.toJson(newEmployee);
-                System.out.println(json);
                 StringEntity requestEntity = new StringEntity(
                         json,
                         ContentType.APPLICATION_JSON);
 
-                HttpPost apipost = new HttpPost("http://localhost:62975/api/employees");
+                HttpPost apipost = new HttpPost("http://localhost:62975/api/employees/newEmployee");
                 apipost.addHeader("content-type", "application/json");
                 apipost.addHeader("Authorization", login.getToken_type() + " " + login.getAccess_token());
                 apipost.setEntity(requestEntity);
@@ -104,7 +103,6 @@ public class NewEmployeeController implements Initializable {
                     loadDialog("Failed", error);
                 } else {
                     Employee employee = gson.fromJson(result, Employee.class);
-                    System.out.println(employee.getFirstName());
                     EmployeeController.employees.add(new Employee(employee.getID(), employee.getFirstName(), employee.getLastName()));
                     Stage stage = (Stage) rootP.getScene().getWindow();
                     stage.close();

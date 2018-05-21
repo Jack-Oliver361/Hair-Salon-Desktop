@@ -164,7 +164,6 @@ public class ServiceController implements Initializable {
                     st.setScene(scene);
                     st.showAndWait();
                     Comparator<Service> byID = Comparator.comparing(Service::getID);
-                    System.out.println(selectedIndex);
                     services.sort(byID);
                     treeView.getSortOrder().add(colID);
                     treeView.getSortOrder().remove(colID);
@@ -182,7 +181,7 @@ public class ServiceController implements Initializable {
         colID.setCellValueFactory((TreeTableColumn.CellDataFeatures<Service, Number> param) -> param.getValue().getValue().serviceID);
 
         JFXTreeTableColumn<Service, String> colName = new JFXTreeTableColumn<>("Name");
-        colName.setPrefWidth(150);
+        colName.setPrefWidth(285);
         colName.setCellValueFactory((TreeTableColumn.CellDataFeatures<Service, String> param) -> param.getValue().getValue().name);
 
         JFXTreeTableColumn<Service, String> colDuration = new JFXTreeTableColumn<>("Duration");

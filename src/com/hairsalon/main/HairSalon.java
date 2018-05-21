@@ -17,20 +17,19 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class HairSalon extends Application {
-    
-    
+
     @Override
     public void start(Stage stage) throws Exception {
 
         Parent root = FXMLLoader.load(getClass().getResource("CalendarView.fxml"));
         Scene scene = new Scene(root);
+        stage.setTitle("Hair Salon booking Manager");
         stage.setScene(scene);
         stage.show();
     }
 
-
     public static void main(String[] args) {
         launch(args);
     }
-    
+
 }

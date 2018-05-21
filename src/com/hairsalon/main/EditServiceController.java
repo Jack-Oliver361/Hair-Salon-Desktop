@@ -22,6 +22,7 @@ import java.nio.charset.UnsupportedCharsetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.Set;
 import javafx.beans.property.IntegerProperty;
@@ -29,6 +30,9 @@ import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TreeItem;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
@@ -67,24 +71,33 @@ public class EditServiceController implements Initializable {
 
     @FXML
     void deleteService(ActionEvent event) throws IOException {
-        try {
-            APIHandler api = new APIHandler("http://localhost:62975/token/login", "login");
-            api.loginAPI();
-            Login login = api.getLoginData();
-            try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle("Delete Service");
+        alert.setHeaderText("Delete Service");
+        alert.setContentText("Are you sure want to delete this service?");
 
-                HttpDelete apiput = new HttpDelete("http://localhost:62975/api/services/" + ServiceIDtxt.getText());
-                apiput.addHeader("content-type", "application/json");
-                apiput.addHeader("Authorization", login.getToken_type() + " " + login.getAccess_token());
-                EmployeeController.employees.remove(EmployeeController.selectedIndex);
-                HttpResponse apiresult = httpClient.execute(apiput);
-                System.out.println(apiresult.getStatusLine());
-                Stage stage = (Stage) rootP.getScene().getWindow();
-                stage.close();
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK) {
+            try {
+                APIHandler api = new APIHandler("http://localhost:62975/token/login", "login");
+                api.loginAPI();
+                Login login = api.getLoginData();
+                try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
 
+                    HttpDelete apiput = new HttpDelete("http://localhost:62975/api/services/delete/" + ServiceIDtxt.getText());
+                    apiput.addHeader("content-type", "application/json");
+                    apiput.addHeader("Authorization", login.getToken_type() + " " + login.getAccess_token());
+                    ServiceController.services.remove(ServiceController.selectedIndex);
+                    HttpResponse apiresult = httpClient.execute(apiput);
+                    Stage stage = (Stage) rootP.getScene().getWindow();
+                    stage.close();
+
+                }
+            } catch (IOException ex) {
+                loadDialog("Failed", "Error connecting to the database, \nPlease click the refresh button \nor reopen the program");
             }
-        } catch (IOException ex) {
-            loadDialog("Failed", "Error connecting to the database, \nPlease click the refresh button \nor reopen the program");
+        } else {
+
         }
     }
 
@@ -104,12 +117,11 @@ public class EditServiceController implements Initializable {
                 gsonBuilder.registerTypeHierarchyAdapter(IntegerProperty.class, new IntegerPropertyAdapter());
                 final Gson gson = gsonBuilder.setPrettyPrinting().disableHtmlEscaping().excludeFieldsWithoutExposeAnnotation().create();
                 String json = gson.toJson(service);
-                System.out.println(json);
                 StringEntity requestEntity = new StringEntity(
                         json,
                         ContentType.APPLICATION_JSON);
 
-                HttpPut apiput = new HttpPut("http://localhost:62975/api/services");
+                HttpPut apiput = new HttpPut("http://localhost:62975/api/services/update");
                 apiput.addHeader("content-type", "application/json");
                 apiput.addHeader("Authorization", login.getToken_type() + " " + login.getAccess_token());
                 apiput.setEntity(requestEntity);

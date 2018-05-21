@@ -69,20 +69,19 @@ public class NewServiceController implements Initializable {
             Login login = api.getLoginData();
             JsonObject newService = new JsonObject();
             newService.addProperty("name", nametxt.getText());
-            newService.addProperty("duration", durationtxt.getText());
-            newService.addProperty("price", pricetxt.getText());
+            newService.addProperty("duration", durationtxt.getText().replace(" ", "") + " mins");
+            newService.addProperty("price", "£" + pricetxt.getText().replace(" ", ""));
             try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
                 final GsonBuilder gsonBuilder = new GsonBuilder();
                 gsonBuilder.registerTypeAdapter(StringProperty.class, new StringPropertyAdapter());
                 gsonBuilder.registerTypeHierarchyAdapter(IntegerProperty.class, new IntegerPropertyAdapter());
                 final Gson gson = gsonBuilder.setPrettyPrinting().disableHtmlEscaping().excludeFieldsWithoutExposeAnnotation().create();
                 String json = gson.toJson(newService);
-                System.out.println(json);
                 StringEntity requestEntity = new StringEntity(
                         json,
                         ContentType.APPLICATION_JSON);
 
-                HttpPost apipost = new HttpPost("http://localhost:62975/api/services");
+                HttpPost apipost = new HttpPost("http://localhost:62975/api/services/newService");
                 apipost.addHeader("content-type", "application/json");
                 apipost.addHeader("Authorization", login.getToken_type() + " " + login.getAccess_token());
                 apipost.setEntity(requestEntity);
@@ -109,7 +108,6 @@ public class NewServiceController implements Initializable {
                     loadDialog("Failed", error);
                 } else {
                     Service service = gson.fromJson(result, Service.class);
-                    System.out.println(service.getName());
                     ServiceController.services.add(new Service(service.getID(), service.getName(), service.getDuration(), service.getPrice()));
                     Stage stage = (Stage) rootP.getScene().getWindow();
                     stage.close();
@@ -128,6 +126,12 @@ public class NewServiceController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
 
         rootP = AnchorPane;
+
+        durationtxt.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) {
+                durationtxt.setText(oldValue);
+            }
+        });
 
     }
 
